@@ -106,6 +106,19 @@ public class UserDao {
 
     }
 
+    public boolean delete(int id){
+        String query="DELETE FROM public.user WHERE user_id =?";
+        try {
+            PreparedStatement pr = con.prepareStatement(query);
+            pr.setInt(1,id);
+            return pr.executeUpdate() != -1 ;
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return true;
+    }
+
     public User getById(int id){
         User obj = null;
         String query ="SELECT * FROM public.user WHERE user_id = ?";

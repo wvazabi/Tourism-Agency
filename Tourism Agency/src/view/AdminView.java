@@ -92,7 +92,11 @@ public class AdminView extends Layout{
                 }
             });
         });
-        this.userMenu.add("Delete");
+        this.userMenu.add("Delete").addActionListener(e -> {
+            int selectedUserId = this.getTableSelectedRow(tbl_user,0);
+            userManager.delete(selectedUserId);
+            loadUserTable();
+        });
 
         this.tbl_user.setComponentPopupMenu(this.userMenu);
     }
