@@ -30,6 +30,7 @@ public class Layout extends JFrame {
         //çift tıklanıldığında düzenlenmesini engelleniyor
         table.setEnabled(false);
 
+        //tabloları güncellediğimizde modeli clearmodel e atıyourz satırları sıfırlıyoruz
         DefaultTableModel clearModel = (DefaultTableModel) table.getModel();
         clearModel.setRowCount(0);
 
@@ -43,7 +44,7 @@ public class Layout extends JFrame {
     }
 
     public int getTableSelectedRow(JTable table,int index){
-
+        //Update fonksiyonu için seçilen ID yi verme
         return Integer.parseInt(table.getValueAt(table.getSelectedRow(),index) .toString());
     }
 

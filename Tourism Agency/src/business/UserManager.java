@@ -1,5 +1,6 @@
 package business;
 
+import core.Helper;
 import dao.UserDao;
 import entity.User;
 
@@ -36,6 +37,27 @@ public class UserManager {
         }
         return userList;
     }
+
+    public boolean save(User user) {
+        if (user.getId() != 0) {
+            Helper.showMsg("error");
+            return false;
+        }
+        return this.userDao.save(user);
+    }
+
+    public boolean update(User user) {
+        if (this.getById(user.getId()) == null) {
+            Helper.showMsg("notFound");
+            return false;
+        }
+        return this.userDao.update(user);
+    }
+
+    public User getById(int id) {
+        return this.userDao.getById(id);
+    }
+
 
 
 }

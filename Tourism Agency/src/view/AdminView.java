@@ -8,6 +8,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class AdminView extends Layout{
@@ -69,8 +71,27 @@ public class AdminView extends Layout{
 
         this.userMenu.add("Add New").addActionListener(e -> {
             UserView userView = new UserView(null);
+
+            userView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    loadUserTable();
+                }
+            });
+
         });
-        this.userMenu.add("Update");
+        this.userMenu.add("Update").addActionListener(e -> {
+            int selectedUserId = this.getTableSelectedRow(tbl_user,0);
+            UserView userView = new UserView(userManager.getById(selectedUserId));
+
+            //User view penceresi kapatıldığında verilerin güncellemesi için adapter
+            userView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    loadUserTable();
+                }
+            });
+        });
         this.userMenu.add("Delete");
 
         this.tbl_user.setComponentPopupMenu(this.userMenu);
