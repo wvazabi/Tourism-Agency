@@ -73,6 +73,11 @@ public class Helper {
             case "error":
                 msg = "Error";
                 header = "Error Message";
+                break;
+            case "notFound":
+                msg = "Record does not found!";
+                header = "Not Found!";
+                break;
             default:
                 msg = str;
                 header = "Message";
