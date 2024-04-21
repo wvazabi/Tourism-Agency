@@ -12,7 +12,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
-public class AdminView extends Layout{
+public class AdminView extends Layout {
     private JPanel container;
     private JPanel pnl_top;
     private JLabel lbl_wecome;
@@ -32,11 +32,11 @@ public class AdminView extends Layout{
 
     public AdminView(User user) {
         this.add(container);
-        this.guiInitilaze(1000,500,"User List");
+        this.guiInitilaze(1000, 500, "User List");
         this.user = user;
         this.userManager = new UserManager();
 
-        if(this.user == null) {
+        if (this.user == null) {
             dispose();
         }
         this.lbl_wecome.setText("Welcome user: " + user.getUsername().toUpperCase());
@@ -54,7 +54,7 @@ public class AdminView extends Layout{
 
         if (userArrayList != null) { // Null kontrolü yapılıyor
             ArrayList<Object[]> userObjectList = this.userManager.getForTable(col_user.length, userArrayList); // Tablo için gerekli listeyi oluştur
-            this.createTable(this.tmdl_user,this.tbl_user,col_user,userObjectList);
+            this.createTable(this.tmdl_user, this.tbl_user, col_user, userObjectList);
         } else {
             // Hata mesajı veya başka bir işlem yapılabilir
             Helper.showMsg("error");
@@ -81,7 +81,7 @@ public class AdminView extends Layout{
 
         });
         this.userMenu.add("Update").addActionListener(e -> {
-            int selectedUserId = this.getTableSelectedRow(tbl_user,0);
+            int selectedUserId = this.getTableSelectedRow(tbl_user, 0);
             UserView userView = new UserView(userManager.getById(selectedUserId));
 
             //User view penceresi kapatıldığında verilerin güncellemesi için adapter
@@ -93,9 +93,17 @@ public class AdminView extends Layout{
             });
         });
         this.userMenu.add("Delete").addActionListener(e -> {
-            int selectedUserId = this.getTableSelectedRow(tbl_user,0);
-            userManager.delete(selectedUserId);
-            loadUserTable();
+            int selectedUserId = this.getTableSelectedRow(tbl_user, 0);
+            if (Helper.confirm("sure")) {
+                if(this.userManager.delete(selectedUserId)) {
+                    loadUserTable();
+                    Helper.showMsg("done");
+                } else {
+                    Helper.showMsg("error");
+                }
+
+            }
+
         });
 
         this.tbl_user.setComponentPopupMenu(this.userMenu);

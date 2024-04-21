@@ -101,6 +101,8 @@ public class Helper {
         }
     }
 
+
+    //Kullanıcıya kritik işlemlerde yes no sormak için
     public static boolean confirm(String str) {
         String msg;
         if (str.equals("sure")) {
@@ -109,6 +111,7 @@ public class Helper {
         } else {
             msg = str;
         }
+        // 0 sa ture göndercek
         return JOptionPane.showConfirmDialog(null, msg, "Are you sure?", JOptionPane.YES_NO_OPTION) == 0;
 
     }
