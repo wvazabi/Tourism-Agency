@@ -2,6 +2,7 @@ package view;
 
 import business.UserManager;
 import core.Helper;
+import entity.Role;
 import entity.User;
 
 import javax.swing.*;
@@ -19,6 +20,7 @@ public class LoginView extends Layout{
     private final UserManager userManager;
 
 
+
     public LoginView() {
         this.userManager = new UserManager();
         this.add(container);
@@ -32,9 +34,13 @@ public class LoginView extends Layout{
                 if(loginUser == null) {
                     Helper.showMsg("notFound");
                 } else {
-                    System.out.println(loginUser.toString());
-                    Helper.showMsg("Succesfully Login","Login Status");
-                    AdminView adminView = new AdminView(loginUser);
+
+                    if(loginUser.getRole() == Role.ADMIN) {
+                        Helper.showMsg("Succesfully Login","Login Status");
+                        AdminView adminView = new AdminView(loginUser);
+                    } else {
+                        Helper.showMsg("User role should be ADMIN", "User Role Denied");
+                    }
                     dispose();
                 }
             }

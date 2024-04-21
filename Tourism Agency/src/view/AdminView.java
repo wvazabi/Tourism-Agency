@@ -6,6 +6,8 @@ import entity.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class AdminView extends Layout{
@@ -22,6 +24,8 @@ public class AdminView extends Layout{
     //Tablolar üzerinde işlem yapabilmemiz için table modellere ihtiyacımız var
     private DefaultTableModel tmdl_user = new DefaultTableModel();
 
+    private JPopupMenu userMenu;
+
     private UserManager userManager;
 
     public AdminView(User user) {
@@ -36,6 +40,7 @@ public class AdminView extends Layout{
         this.lbl_wecome.setText("Welcome user: " + user.getUsername().toUpperCase());
 
         loadUserTable();
+        loadUserComponent();
 
     }
 
@@ -54,5 +59,20 @@ public class AdminView extends Layout{
         }
 
 
+    }
+
+    public void loadUserComponent() {
+
+        this.tableRowSelect(tbl_user);
+        this.userMenu = new JPopupMenu();
+        //içersine string veya menu alabiliyor
+
+        this.userMenu.add("Add New").addActionListener(e -> {
+            UserView userView = new UserView(null);
+        });
+        this.userMenu.add("Update");
+        this.userMenu.add("Delete");
+
+        this.tbl_user.setComponentPopupMenu(this.userMenu);
     }
 }

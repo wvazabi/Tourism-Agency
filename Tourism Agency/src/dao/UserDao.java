@@ -66,4 +66,19 @@ public class UserDao {
         user.setRole(Role.valueOf(resultSet.getString("user_role")));
         return user;
     }
+
+    //TODO save boolean çünkü ya başarılıdır ya başarısızdır
+    public boolean save(User user) {
+        String query = "INSERT INTO pulic.user VALUES (?)";
+
+
+        try {
+            PreparedStatement pr = this.CON.prepareStatement(query);
+            pr.setString(1,brand.getName());
+            return pr.executeUpdate() != -1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
 }
