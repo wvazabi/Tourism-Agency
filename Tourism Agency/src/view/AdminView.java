@@ -39,6 +39,11 @@ public class AdminView extends Layout {
         }
         this.lbl_wecome.setText("Welcome user: " + user.getUsername().toUpperCase());
 
+        btn_log_out.addActionListener(e -> {
+            dispose();
+            LoginView loginView = new LoginView();
+        });
+
         loadUserTable();
         loadUserComponent();
 

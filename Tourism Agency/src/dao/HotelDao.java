@@ -26,7 +26,7 @@ public class HotelDao {
         ArrayList<Hotel> hotelArrayList = new ArrayList<>();
 
         //order by ile daha sonra güncellenenleri sona atmayı engelledik
-        String query = "SELECT * FROM public.user ORDER BY hotel_id ASC";
+        String query = "SELECT * FROM public.hotel ORDER BY hotel_id ASC";
         try {
             ResultSet resultSet = this.con.createStatement().executeQuery(query);
 
@@ -37,6 +37,7 @@ public class HotelDao {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        System.out.println("Hotel Array List: " + hotelArrayList.get(0).getHotelRoomService());
         return hotelArrayList;
     }
 //TODO Hotel Search
@@ -65,6 +66,7 @@ public class HotelDao {
 
     public Hotel match(ResultSet resultSet) throws SQLException {
         Hotel hotel = new Hotel();
+
         hotel.setHotelId(resultSet.getInt("hotel_id"));
         hotel.setHotelName(resultSet.getString("hotel_name"));
         hotel.setHotelAddress(resultSet.getString("hotel_address"));

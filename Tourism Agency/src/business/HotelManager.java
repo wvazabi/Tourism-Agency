@@ -3,7 +3,7 @@ package business;
 import core.Helper;
 import dao.HotelDao;
 import entity.Hotel;
-import entity.User;
+
 
 import java.util.ArrayList;
 
@@ -24,48 +24,64 @@ public class HotelManager {
         return hotelDao.findAll();
     }
 
+    // tablodaki her satır için row object oluşturulup hotel lsitesine atanıyor
     public ArrayList<Object[]> getForTable(int size, ArrayList<Hotel> hotels) {
         ArrayList<Object[]> hotelList = new ArrayList<>();
-        for (Hotel obj : h) {
+        for (Hotel obj : hotels) {
             int i = 0;
             Object[] rowObject = new Object[size];
-            rowObject[i++] = obj.getId();
-            rowObject[i++] = obj.getUsername();
-            rowObject[i++] = obj.getPassword();
-            rowObject[i++] = obj.getRole();
 
-            userList.add(rowObject);
+            rowObject[i++] = obj.getHotelId();
+            rowObject[i++] = obj.getHotelName();
+            rowObject[i++] = obj.getHotelAddress();
+            rowObject[i++] = obj.getHotelMail();
+            rowObject[i++] = obj.getHotelPhone();
+            rowObject[i++] = obj.getHotelStar();
+            rowObject[i++] = obj.getHotelCarPark();
+            rowObject[i++] = obj.getHotelWifi();
+            rowObject[i++] = obj.getHotelPool();
+            rowObject[i++] = obj.getHotelFitness();
+            rowObject[i++] = obj.getHotelConcierge();
+            rowObject[i++] = obj.getHotelSpa();
+            rowObject[i++] = obj.getHotelRoomService();
+
+
+            hotelList.add(rowObject);
         }
-        return userList;
+
+        System.out.println("Hotel getfortable List: " + hotelList);
+
+
+        return hotelList;
     }
 
-    public boolean save(User user) {
-        if (user.getId() != 0) {
-            Helper.showMsg("error");
-            return false;
-        }
-        return this.userDao.save(user);
-    }
+//    public boolean save(User user) {
+//        if (user.getId() != 0) {
+//            Helper.showMsg("error");
+//            return false;
+//        }
+//        return this.userDao.save(user);
+//    }
 
-    public boolean update(User user) {
-        if (this.getById(user.getId()) == null) {
-            Helper.showMsg("notFound");
-            return false;
-        }
-        return this.userDao.update(user);
-    }
+//    public boolean update(User user) {
+//        if (this.getById(user.getId()) == null) {
+//            Helper.showMsg("notFound");
+//            return false;
+//        }
+//        return this.userDao.update(user);
+//    }
 
-    public boolean delete(int id) {
+//    public boolean delete(int id) {
+//
+//        if(this.getById(id) == null){
+//            Helper.showMsg("notFound");
+//            return false;
+//        }
+//        return this.userDao.delete(id);
+//    }
 
-        if(this.getById(id) == null){
-            Helper.showMsg("notFound");
-            return false;
-        }
-        return this.userDao.delete(id);
-    }
-
-    public User getById(int id) {
-        return this.userDao.getById(id);
+    public Hotel getById(int id) {
+        return this.hotelDao.getById(id);
     }
 
 

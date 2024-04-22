@@ -154,6 +154,11 @@ public class Hotel {
     public boolean getHotelSpa() {
         return hotelSpa;
     }
+    public boolean getHotelCarPark() {
+        return hotelCarParking;
+    }
+
+
 
     public void setHotelSpa(boolean hotelSpa) {
         this.hotelSpa = hotelSpa;

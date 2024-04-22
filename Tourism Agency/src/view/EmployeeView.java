@@ -1,6 +1,18 @@
 package view;
 
+import business.HotelManager;
+import business.UserManager;
+import core.Helper;
+import entity.Hotel;
+import entity.User;
+
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 public class EmployeeView extends Layout {
     private JPanel container;
@@ -30,9 +42,57 @@ public class EmployeeView extends Layout {
     private JPanel pnl_add_delete_hotel;
     private JTable tbl_hotel_list;
 
-    public EmployeeView() {
+    private Hotel hotel;
+    private User user;
+
+    //Tablolar üzerinde işlem yapabilmemiz için table modellere ihtiyacımız var
+    private DefaultTableModel tmdl_hotel = new DefaultTableModel();
+
+    private JPopupMenu hotelMenu;
+
+    private HotelManager hotelManager;
+
+    public EmployeeView(User user) {
         this.add(container);
-        this.guiInitilaze(1250,750,"Employee Management");
+        this.guiInitilaze(1500,750,"Employee Management");
+        this.hotelManager = new HotelManager();
+        this.user = user;
+
+        this.lbl_welcome.setText("Welcome employee user: " + user.getUsername().toUpperCase());
+        btn_logout.addActionListener(e -> {
+            dispose();
+            LoginView loginView = new LoginView();
+        });
+
+        loadHotelTable();
+        loadHotelComponent();
+
+
+    }
+
+    public void loadHotelTable() {
+
+        // tablonun kolonlarını oluşturuyoruz Java da bütün veri tipleri objden üretildiği için obj kulllanıyoruz
+        Object[] col_hotel = {"Hotel ID", "Hotel Name", "Hotel Address", "Hotel Mail", "Hotel Phone","Hotel Star","Hotel Car Park","Hotel Wifi","Hotel Pool","Hotel Fitness", "Hotel Concierge", "Hotel Spa", "Hotel Room Service"};
+        ArrayList<Hotel> hotelArrayList = hotelManager.findAll();
+
+
+        if (hotelArrayList != null) { // Null kontrolü yapılıyor
+            ArrayList<Object[]> hotelObjectList = this.hotelManager.getForTable(col_hotel.length, hotelArrayList); // Tablo için gerekli listeyi oluştur
+            this.createTable(this.tmdl_hotel, this.tbl_hotel_list, col_hotel, hotelObjectList);
+        } else {
+            // Hata mesajı veya başka bir işlem yapılabilir
+            Helper.showMsg("error");
+        }
+
+    }
+
+    public void loadHotelComponent() {
+        this.tableRowSelect(tbl_hotel_list);
+        int selectedHotelId = this.getTableSelectedRow(tbl_hotel_list, 0);
+        fld_dlt_hotel_id.setText(String.valueOf(selectedHotelId));
+
+
 
     }
 }
