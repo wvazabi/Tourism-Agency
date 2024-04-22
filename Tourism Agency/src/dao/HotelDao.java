@@ -37,9 +37,27 @@ public class HotelDao {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        System.out.println("Hotel Array List: " + hotelArrayList.get(0).getHotelRoomService());
         return hotelArrayList;
     }
+
+    public ArrayList<Hotel> findAll(String query) {
+        ArrayList<Hotel> hotelArrayList = new ArrayList<>();
+
+        //order by ile daha sonra güncellenenleri sona atmayı engelledik
+        try {
+            ResultSet resultSet = this.con.createStatement().executeQuery(query);
+
+            //Arraylist yaptığımız için while kullandık
+            while (resultSet.next()) {
+                hotelArrayList.add(this.match(resultSet));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return hotelArrayList;
+    }
+
 //TODO Hotel Search
 //    public Hotel findByLogin(String username, String password) {
 //        Hotel obj = null;
@@ -85,22 +103,31 @@ public class HotelDao {
 
     //TODO save boolean çünkü ya başarılıdır ya başarısızdır
 
-//    public boolean save(User user) {
-//        String query = "INSERT INTO public.user (user_name, user_password, user_role) VALUES (?, ?, ?)";
-//
-//        try {
-//            PreparedStatement pr = this.con.prepareStatement(query);
-//            pr.setString(1, user.getUsername());
-//            pr.setString(2, user.getPassword());
-//            pr.setString(3, user.getRole().toString());
-//
-//            //boolean metod olduğu için retun bu şekilde en az bir satır çalışırsa değer 0 dan büyük olur (TRUE)
-//            return pr.executeUpdate() != -1;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return true;
-//    }
+    public boolean save(Hotel hotel) {
+        String query = "INSERT INTO public.hotel (hotel_name,hotel_address,hotel_mail,hotel_phone,hotel_star,hotel_car_park,hotel_wifi,hotel_pool,hotel_fitness,hotel_concierge,hotel_spa,hotel_room_service) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+
+        try {
+            PreparedStatement pr = this.con.prepareStatement(query);
+            pr.setString(1, hotel.getHotelName());
+            pr.setString(2, hotel.getHotelAddress());
+            pr.setString(3, hotel.getHotelMail());
+            pr.setString(4, hotel.getHotelPhone());
+            pr.setString(5, hotel.getHotelStar());
+            pr.setBoolean(6, hotel.getHotelCarPark());
+            pr.setBoolean(7, hotel.getHotelWifi());
+            pr.setBoolean(8, hotel.getHotelPool());
+            pr.setBoolean(9, hotel.getHotelFitness());
+            pr.setBoolean(10, hotel.getHotelConcierge());
+            pr.setBoolean(11, hotel.getHotelSpa());
+            pr.setBoolean(12, hotel.getHotelRoomService());
+
+            //boolean metod olduğu için retun bu şekilde en az bir satır çalışırsa değer 0 dan büyük olur (TRUE)
+            return pr.executeUpdate() != -1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
 
     //TODO update
 //    public boolean update(User user) {
@@ -152,4 +179,18 @@ public class HotelDao {
         return obj;
 
     }
+
+    public String searchHotelByQuery(String name, String address, String star) {
+        String query = "SELECT * FROM public.hotel WHERE hotel_name LIKE '%{{name}}%' AND hotel_star LIKE '%{{star}}%'";
+        query = query.replace("{{name}}", name);
+        query = query.replace("{{address}}", address);
+        query = query.replace("{{star}}", star);
+        if(!address.isEmpty()) {
+            query += " AND hotel_address='{{address}}'";
+            query = query.replace("{{address}}", address);
+        }
+
+        return query;
+    }
+
 }

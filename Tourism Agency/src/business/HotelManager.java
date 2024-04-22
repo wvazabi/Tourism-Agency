@@ -3,6 +3,7 @@ package business;
 import core.Helper;
 import dao.HotelDao;
 import entity.Hotel;
+import entity.User;
 
 
 import java.util.ArrayList;
@@ -22,6 +23,9 @@ public class HotelManager {
 
     public ArrayList<Hotel> findAll() {
         return hotelDao.findAll();
+    }
+    public ArrayList<Hotel> findAll(String query) {
+        return hotelDao.findAll(query);
     }
 
     // tablodaki her satır için row object oluşturulup hotel lsitesine atanıyor
@@ -55,13 +59,13 @@ public class HotelManager {
         return hotelList;
     }
 
-//    public boolean save(User user) {
-//        if (user.getId() != 0) {
-//            Helper.showMsg("error");
-//            return false;
-//        }
-//        return this.userDao.save(user);
-//    }
+    public boolean save(Hotel hotel) {
+        if (hotel.getHotelId() != 0) {
+            Helper.showMsg("error");
+            return false;
+        }
+        return this.hotelDao.save(hotel);
+    }
 
 //    public boolean update(User user) {
 //        if (this.getById(user.getId()) == null) {
@@ -83,6 +87,13 @@ public class HotelManager {
     public Hotel getById(int id) {
         return this.hotelDao.getById(id);
     }
+
+    public String searchHotelByQuery(String name, String address, String star) {
+
+        return this.hotelDao.searchHotelByQuery(name, address, star);
+    }
+
+
 
 
 }

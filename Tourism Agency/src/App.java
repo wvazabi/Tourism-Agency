@@ -2,6 +2,7 @@ import core.Helper;
 import entity.Role;
 import entity.User;
 import view.EmployeeView;
+import view.HotelSaveView;
 
 public class App {
     public static void main(String[] args) {
@@ -12,6 +13,7 @@ public class App {
        User dummyUser = new User("enes","1234", Role.EMPLOYEE);
 //        AdminView adminView = new AdminView(dummyUser);
         EmployeeView employeeView = new EmployeeView(dummyUser);
+//        HotelSaveView hotelSaveView = new HotelSaveView(null);
 
     }
 

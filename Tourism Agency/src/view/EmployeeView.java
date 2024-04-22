@@ -2,6 +2,7 @@ package view;
 
 import business.HotelManager;
 import core.Helper;
+import dao.HotelDao;
 import entity.Hotel;
 import entity.Role;
 import entity.Star;
@@ -9,6 +10,8 @@ import entity.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class EmployeeView extends Layout {
@@ -28,16 +31,11 @@ public class EmployeeView extends Layout {
     private JTextField fld_srch_hotel_adress;
     private JComboBox cmb_srch_hotel_star;
     private JButton btn_srch_hotel;
-    private JTextField fld_add_hotel_name;
-    private JTextField fld_add_hotel_address;
-    private JTextField fld_add_hotel_mail;
-    private JTextField fld_add_hotel_phone;
-    private JComboBox cmd_add_hotel_star;
-    private JButton btn_add_feature_hotel;
     private JTextField fld_dlt_hotel_id;
     private JButton btn_delete_hotel;
     private JPanel pnl_add_delete_hotel;
     private JTable tbl_hotel_list;
+    private Object [] row_hotel_list;
 
     private DefaultComboBoxModel<Star> cmbModel;
 
@@ -135,15 +133,56 @@ public class EmployeeView extends Layout {
         cmbModel = new DefaultComboBoxModel<>(values);
         cmb_srch_hotel_star.setModel(cmbModel);
 
-        btn_srch_hotel.addActionListener(e -> {
-            String name = fld_srch_hotel_name.getText();
-            String address = fld_srch_hotel_adress.getText();
-            String star = cmb_srch_hotel_star.getSelectedItem().toString();
-//            String query = Hotel.searchQuery(name, city, region, star);
-//            loadSearchHotelModel(Hotel.searchHotelList(query));
+
+        //JPopupMenu
+        this.hotelMenu = new JPopupMenu();
+        //içersine string veya menu alabiliyor
+
+        this.hotelMenu.add("Add New").addActionListener(e -> {
+            HotelSaveView hotelSaveView = new HotelSaveView(null);
+
+            hotelSaveView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    loadHotelTable();
+                }
+            });
+
         });
 
+//        this.hotelMenu.add("Update").addActionListener(e -> {
+//            int selectedUserId = this.getTableSelectedRow(tbl_hotel_list, 0);
+//            HotelSaveView hotelSaveView = new HotelSaveView(hotelManager.getById(selectedUserId));
+//
+//            //User view penceresi kapatıldığında verilerin güncellemesi için adapter
+//            userView.addWindowListener(new WindowAdapter() {
+//                @Override
+//                public void windowClosed(WindowEvent e) {
+//                    loadUserTable();
+//                }
+//            });
+//        });
 
 
+
+//        this.userMenu.add("Delete").addActionListener(e -> {
+//            int selectedUserId = this.getTableSelectedRow(tbl_user, 0);
+//            if (Helper.confirm("sure")) {
+//                if(this.userManager.delete(selectedUserId)) {
+//                    loadUserTable();
+//                    Helper.showMsg("done");
+//                } else {
+//                    Helper.showMsg("error");
+//                }
+//
+//            }
+//
+//        });
+
+        this.tbl_hotel_list.setComponentPopupMenu(this.hotelMenu);
     }
+
+
+
+
 }
