@@ -1,6 +1,7 @@
 package business;
 
 import core.Helper;
+import dao.HotelDao;
 import dao.SeasonDao;
 import entity.Season;
 
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 
 public class SeasonManager {
     private final SeasonDao seasonDao = new SeasonDao();
+    private final HotelDao hotelDao = new HotelDao();
 
     public Season getById(int id) {
         return this.seasonDao.getById(id);
@@ -24,6 +26,7 @@ public class SeasonManager {
 
             Object[] rowObject = new Object[size];
             rowObject[i++] = obj.getId();
+            rowObject[i++] = this.hotelDao.getById(obj.getHotelId()).getHotelName();
             rowObject[i++] = obj.getHotelId();
             rowObject[i++] = obj.getStartDate();
             rowObject[i++] = obj.getFinishDate();

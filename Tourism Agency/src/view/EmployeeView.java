@@ -1,8 +1,10 @@
 package view;
 
 import business.HotelManager;
+import business.SeasonManager;
 import core.Helper;
 import entity.Hotel;
+import entity.Season;
 import entity.Star;
 import entity.User;
 
@@ -35,25 +37,34 @@ public class EmployeeView extends Layout {
     private JTable tbl_hotel_list;
     private JTable tbl_season;
     private JScrollPane scrl_pane_season;
-    private Object [] row_hotel_list;
+
 
     private DefaultComboBoxModel<Star> cmbModel;
 
 
+    private Object[] col_season;
+    //private Object[] col_hotel;
+    private Object [] row_hotel_list;
+
     private Hotel hotel;
     private User user;
+    private Season season;
 
     //Tablolar üzerinde işlem yapabilmemiz için table modellere ihtiyacımız var
     private DefaultTableModel tmdl_hotel;
+    private DefaultTableModel tmdl_season;
 
     private JPopupMenu hotelMenu;
+    private JPopupMenu seasonMenu;
 
     private HotelManager hotelManager;
+    private SeasonManager seasonManager;
 
     public EmployeeView(User user) {
         this.add(container);
         this.guiInitilaze(1500,750,"Employee Management");
         this.hotelManager = new HotelManager();
+        this.seasonManager = new SeasonManager();
         this.user = user;
 
         this.lbl_welcome.setText("Welcome employee user: " + user.getUsername().toUpperCase());
@@ -65,26 +76,37 @@ public class EmployeeView extends Layout {
         loadHotelComponent();
         loadHotelTable();
 
+        loadSeasonComponent();
+        loadSeasonTable(null);
+
 
 
     }
 
     public void loadSeasonTable(ArrayList<Object[]> seasonList) {
-        this.col_season = new Object[]{"Season ID","Hotel Name", "Hotel ID","Start Date","Finish Date","Yakıt Türü ","Vites"};
+        this.col_season = new Object[]{"Season ID","Hotel Name","Hotel ID","Start Date","Finish Date"};
 
-
-    }
-
-    public void loadModelTable(ArrayList<Object[]> modelList) {
-        this.col_model = new Object[]{"Model ID","Marka", "Model Adı","Tip","Yıl","Yakıt Türü ","Vites"};
-        if(modelList ==null){
-            modelList = this.modelManager.getForTable(this.col_model.length,this.modelManager.findAll());
+        if(seasonList == null){
+            seasonList = this.seasonManager.getForTable(this.col_season.length,this.seasonManager.findAll());
         }
 
-        this.createTable(this.tmdl_model, this.tbl_model, this.col_model, modelList);
+        this.createTable(this.tmdl_season, this.tbl_season, this.col_season, seasonList);
+
+
+
     }
 
+
+
     public void loadSeasonComponent() {
+
+        this.tableRowSelect(tbl_season);
+        tmdl_season = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) { // Sadece belirli bir sütunun düzenlenemez olmasını sağlar
+                return column != 1; // 1. sütun (sütun indeksi 0) dışındaki tüm sütunlar düzenlenebilir olacak
+            }
+        };
 
     }
 
