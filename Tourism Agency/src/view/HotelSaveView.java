@@ -68,7 +68,7 @@ public class HotelSaveView extends Layout {
                 Helper.showMsg("fill");
             } else {
 
-                boolean result = true;
+                boolean result;
 
                 if (this.hotel == null) {
                     // user boş ise save işlemi
@@ -87,14 +87,25 @@ public class HotelSaveView extends Layout {
                     // save metodu return boolean dönüyor
                     result = this.hotelManager.save(this.hotel);
                 }
-//                else {
-//                    // update işlemi user boş değilse
-//                    this.user.setUsername(fld_username.getText());
-//                    this.user.setPassword(fld_password.getText());
-//                    this.user.setRole((Role) cmb_role.getSelectedItem());
-//                    result = this.userManager.update(this.user);
-//
-//                }
+                else {
+                    // update işlemi user boş değilse
+                    this.hotel.setHotelName(fld_add_hotel_name.getName());
+                    this.hotel.setHotelName(fld_add_hotel_name.getText());
+                    this.hotel.setHotelAddress(fld_add_hotel_address.getText());
+                    this.hotel.setHotelMail(fld_add_hotel_mail.getText());
+                    this.hotel.setHotelPhone(fld_add_hotel_phone.getText());
+                    this.hotel.setHotelStar(cmd_add_hotel_star.getSelectedItem() != null ? cmd_add_hotel_star.getSelectedItem().toString() : "");
+                    this.hotel.setHotelCarParking(rd_hotel_car_park.isSelected());
+                    this.hotel.setHotelWifi(rd_hotel_wifi.isSelected());
+                    this.hotel.setHotelPool(rd_hotel_pool.isSelected());
+                    this.hotel.setHotelFitness(rd_hotel_fitness.isSelected());
+                    this.hotel.setHotelConcierge(rd_hotel_concierge.isSelected());
+                    this.hotel.setHotelSpa(rd_hotel_spa.isSelected());
+                    this.hotel.setHotelRoomService(rd_hotel_room_service.isSelected());
+
+                    result = this.hotelManager.update(this.hotel);
+
+                }
                 if (result == true) {
                     Helper.showMsg("done");
                     dispose();

@@ -67,13 +67,13 @@ public class HotelManager {
         return this.hotelDao.save(hotel);
     }
 
-//    public boolean update(User user) {
-//        if (this.getById(user.getId()) == null) {
-//            Helper.showMsg("notFound");
-//            return false;
-//        }
-//        return this.userDao.update(user);
-//    }
+    public boolean update(Hotel hotel) {
+        if (this.getById(hotel.getHotelId()) == null) {
+            Helper.showMsg("notFound");
+            return false;
+        }
+        return this.hotelDao.update(hotel);
+    }
 
     public boolean delete(int id) {
 

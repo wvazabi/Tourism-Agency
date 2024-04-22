@@ -130,25 +130,46 @@ public class HotelDao {
     }
 
     //TODO update
-//    public boolean update(User user) {
-//        String query = "UPDATE public.user SET user_name = ?, user_password = ?, user_role = ? WHERE user_id = ?";
-//        try {
-//            PreparedStatement pr = this.con.prepareStatement(query);
-//            {
-//                pr.setString(1, user.getUsername());
-//                pr.setString(2, user.getPassword());
-//                pr.setString(3, user.getRole().toString());
-//                pr.setInt(4, user.getId());
-//
-//                return pr.executeUpdate() != -1;
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//
-//            return true;
-//        }
-//
-//    }
+    public boolean update(Hotel hotel) {
+        String query = "UPDATE public.hotel SET " +
+                "hotel_name = ?, " +
+                "hotel_address = ?, " +
+                "hotel_mail = ?, " +
+                "hotel_phone = ?, " +
+                "hotel_star = ?, " +
+                "hotel_car_park = ?, " +
+                "hotel_wifi = ?, " +
+                "hotel_pool = ?, " +
+                "hotel_fitness = ?, " +
+                "hotel_concierge = ?, " +
+                "hotel_spa = ?, " +
+                "hotel_room_service = ? " +
+                "WHERE hotel_id = ?";
+        try {
+            PreparedStatement pr = this.con.prepareStatement(query);
+            pr.setString(1, hotel.getHotelName());
+            pr.setString(2, hotel.getHotelAddress());
+            pr.setString(3, hotel.getHotelMail());
+            pr.setString(4, hotel.getHotelPhone());
+            pr.setString(5, hotel.getHotelStar());
+            pr.setBoolean(6, hotel.getHotelCarPark());
+            pr.setBoolean(7, hotel.getHotelWifi());
+            pr.setBoolean(8, hotel.getHotelPool());
+            pr.setBoolean(9, hotel.getHotelFitness());
+            pr.setBoolean(10, hotel.getHotelConcierge());
+            pr.setBoolean(11, hotel.getHotelSpa());
+            pr.setBoolean(12, hotel.getHotelRoomService());
+            pr.setInt(13, hotel.getHotelId());
+
+            return pr.executeUpdate() != -1;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Güncelleme işlemi başarısız olduğunda false döndür
+        }
+
+
+    }
 //TODO delete
     public boolean delete(int id) {
         String query = "DELETE FROM public.hotel WHERE hotel_id =?";

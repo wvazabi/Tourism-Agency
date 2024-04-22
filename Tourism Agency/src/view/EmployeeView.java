@@ -150,18 +150,18 @@ public class EmployeeView extends Layout {
 
         });
 
-//        this.hotelMenu.add("Update").addActionListener(e -> {
-//            int selectedUserId = this.getTableSelectedRow(tbl_hotel_list, 0);
-//            HotelSaveView hotelSaveView = new HotelSaveView(hotelManager.getById(selectedUserId));
-//
-//            //User view penceresi kapatıldığında verilerin güncellemesi için adapter
-//            userView.addWindowListener(new WindowAdapter() {
-//                @Override
-//                public void windowClosed(WindowEvent e) {
-//                    loadUserTable();
-//                }
-//            });
-//        });
+        this.hotelMenu.add("Update").addActionListener(e -> {
+            int selectedHotelId = this.getTableSelectedRow(tbl_hotel_list, 0);
+            HotelSaveView hotelSaveView = new HotelSaveView(hotelManager.getById(selectedHotelId));
+
+            //User view penceresi kapatıldığında verilerin güncellemesi için adapter
+            hotelSaveView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    loadHotelTable();
+                }
+            });
+        });
 
 
 
