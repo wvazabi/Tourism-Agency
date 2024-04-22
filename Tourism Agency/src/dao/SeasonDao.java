@@ -69,7 +69,7 @@ public class SeasonDao {
                 "(" +
                 "hotel_id," +
                 "start_date," +
-                "finish_date," +
+                "finish_date " +
                 ")" +
                 "VALUES (?,?,?)";
 
@@ -89,7 +89,7 @@ public class SeasonDao {
         String query = "UPDATE public.season SET " +
                 "hotel_id = ?," +
                 "start_date = ?," +
-                "finish_date = ?," +
+                "finish_date = ? " +
                 "WHERE season_id = ?";
 
 

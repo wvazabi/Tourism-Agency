@@ -12,7 +12,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class EmployeeView extends Layout {
     private JPanel container;
@@ -109,7 +111,9 @@ public class EmployeeView extends Layout {
         this.seasonMenu = new JPopupMenu();
 
         seasonMenu.add("Add").addActionListener(e -> {
-            SeasonView seasonView = new SeasonView(new Season(),null,null);
+            SeasonView seasonView = new SeasonView(new Season());
+
+
             seasonView.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
@@ -137,7 +141,7 @@ public class EmployeeView extends Layout {
             int selectSeasonId   = this.getTableSelectedRow(tbl_season,0);
             String startDate = seasonManager.getById(selectSeasonId).getStartDate().toString();
             String finishDate = seasonManager.getById(selectSeasonId).getFinishDate().toString();
-            SeasonView seasonView = new SeasonView(this.seasonManager.getById(selectSeasonId),startDate,finishDate);
+            SeasonView seasonView = new SeasonView(this.seasonManager.getById(selectSeasonId));
             seasonView.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
