@@ -1,17 +1,14 @@
 package view;
 
 import business.HotelManager;
-import business.UserManager;
 import core.Helper;
 import entity.Hotel;
+import entity.Role;
+import entity.Star;
 import entity.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class EmployeeView extends Layout {
@@ -30,7 +27,7 @@ public class EmployeeView extends Layout {
     private JTextField fld_srch_hotel_name;
     private JTextField fld_srch_hotel_adress;
     private JComboBox cmb_srch_hotel_star;
-    private JButton hotelSearchButton;
+    private JButton btn_srch_hotel;
     private JTextField fld_add_hotel_name;
     private JTextField fld_add_hotel_address;
     private JTextField fld_add_hotel_mail;
@@ -42,11 +39,14 @@ public class EmployeeView extends Layout {
     private JPanel pnl_add_delete_hotel;
     private JTable tbl_hotel_list;
 
+    private DefaultComboBoxModel<Star> cmbModel;
+
+
     private Hotel hotel;
     private User user;
 
     //Tablolar üzerinde işlem yapabilmemiz için table modellere ihtiyacımız var
-    private DefaultTableModel tmdl_hotel = new DefaultTableModel();
+    private DefaultTableModel tmdl_hotel;
 
     private JPopupMenu hotelMenu;
 
@@ -64,8 +64,9 @@ public class EmployeeView extends Layout {
             LoginView loginView = new LoginView();
         });
 
-        loadHotelTable();
         loadHotelComponent();
+        loadHotelTable();
+
 
 
     }
@@ -88,7 +89,28 @@ public class EmployeeView extends Layout {
     }
 
     public void loadHotelComponent() {
-      
+
+        //Tabloyu  seçilebilir yapar
+        this.tableRowSelect(tbl_hotel_list);
+        tmdl_hotel = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) { // Sadece belirli bir sütunun düzenlenemez olmasını sağlar
+                return column != 1; // 1. sütun (sütun indeksi 0) dışındaki tüm sütunlar düzenlenebilir olacak
+            }
+        };
+
+
+        // Seçtiğimiz satırdaki id'yi fld_user_id kutucuğuna getirir.
+        tbl_hotel_list.getSelectionModel().addListSelectionListener(e -> {
+            try {
+                String select_hotel_id = tbl_hotel_list.getValueAt(tbl_hotel_list.getSelectedRow(), 0).toString();
+                fld_dlt_hotel_id.setText(select_hotel_id);
+            } catch (Exception ignored){
+            }
+        });
+
+
+
 
         btn_delete_hotel.addActionListener(e -> {
             if(Helper.isFieldEmpty(fld_dlt_hotel_id)) {
@@ -105,6 +127,20 @@ public class EmployeeView extends Layout {
                     }
                 }
             }
+        });
+
+        //cmb_star
+
+        Star[] values = Star.values();
+        cmbModel = new DefaultComboBoxModel<>(values);
+        cmb_srch_hotel_star.setModel(cmbModel);
+
+        btn_srch_hotel.addActionListener(e -> {
+            String name = fld_srch_hotel_name.getText();
+            String address = fld_srch_hotel_adress.getText();
+            String star = cmb_srch_hotel_star.getSelectedItem().toString();
+//            String query = Hotel.searchQuery(name, city, region, star);
+//            loadSearchHotelModel(Hotel.searchHotelList(query));
         });
 
 
