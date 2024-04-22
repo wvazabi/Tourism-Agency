@@ -26,7 +26,7 @@ public class SeasonView extends Layout {
     private ArrayList<Hotel> hotels;
     private DefaultComboBoxModel cmbModel;
 
-    public SeasonView(Season season) {
+    public SeasonView(Season season, String startDate, String finishDate) {
         this.add(container);
         this.seasonManager = new SeasonManager();
         this.hotelManager = new HotelManager();
@@ -44,8 +44,8 @@ public class SeasonView extends Layout {
         this.fld_finish_date.setText(LocalDate.now().toString());
 
         if(this.season.getId() != 0){
-            this.fld_start_date.setText(LocalDate.now().toString());
-            this.fld_finish_date.setText(LocalDate.now().toString());
+            this.fld_start_date.setText(startDate);
+            this.fld_finish_date.setText(finishDate);
 
 
 

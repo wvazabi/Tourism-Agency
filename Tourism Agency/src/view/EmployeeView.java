@@ -111,7 +111,7 @@ public class EmployeeView extends Layout {
         this.seasonMenu = new JPopupMenu();
 
         seasonMenu.add("Add").addActionListener(e -> {
-            SeasonView seasonView = new SeasonView(new Season());
+            SeasonView seasonView = new SeasonView(new Season(),null,null);
 
 
             seasonView.addWindowListener(new WindowAdapter() {
@@ -141,7 +141,7 @@ public class EmployeeView extends Layout {
             int selectSeasonId   = this.getTableSelectedRow(tbl_season,0);
             String startDate = seasonManager.getById(selectSeasonId).getStartDate().toString();
             String finishDate = seasonManager.getById(selectSeasonId).getFinishDate().toString();
-            SeasonView seasonView = new SeasonView(this.seasonManager.getById(selectSeasonId));
+            SeasonView seasonView = new SeasonView(this.seasonManager.getById(selectSeasonId),startDate,finishDate);
             seasonView.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
