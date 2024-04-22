@@ -96,8 +96,6 @@ public class EmployeeView extends Layout {
 
     }
 
-
-
     public void loadSeasonComponent() {
 
         this.tableRowSelect(tbl_season);
@@ -107,6 +105,53 @@ public class EmployeeView extends Layout {
                 return column != 1; // 1. sütun (sütun indeksi 0) dışındaki tüm sütunlar düzenlenebilir olacak
             }
         };
+
+        this.seasonMenu = new JPopupMenu();
+
+        seasonMenu.add("Add").addActionListener(e -> {
+            SeasonView seasonView = new SeasonView(new Season(),null,null);
+            seasonView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    loadSeasonTable(null);
+                }
+            });
+
+        });
+        seasonMenu.add("Delete").addActionListener(e -> {
+            if(Helper.confirm("sure")){
+                int selectSeasonId   = this.getTableSelectedRow(tbl_season,0);
+                if(this.seasonManager.delete(selectSeasonId)){
+                    Helper.showMsg("done","");
+
+                    loadSeasonTable(null);
+                    loadHotelTable();
+                }else {
+                    Helper.showMsg("error");
+                }
+            }
+        });
+
+        seasonMenu.add("Update").addActionListener(e -> {
+
+            int selectSeasonId   = this.getTableSelectedRow(tbl_season,0);
+            String startDate = seasonManager.getById(selectSeasonId).getStartDate().toString();
+            String finishDate = seasonManager.getById(selectSeasonId).getFinishDate().toString();
+            SeasonView seasonView = new SeasonView(this.seasonManager.getById(selectSeasonId),startDate,finishDate);
+            seasonView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                   loadSeasonTable(null);
+                }
+            });
+
+        });
+
+        tbl_season.setComponentPopupMenu(seasonMenu);
+
+
+
+
 
     }
 

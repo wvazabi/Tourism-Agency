@@ -4,6 +4,7 @@ import core.Helper;
 import dao.HotelDao;
 import dao.SeasonDao;
 import entity.Season;
+import entity.Hotel;
 
 import java.util.ArrayList;
 
@@ -65,5 +66,15 @@ public class SeasonManager {
 
     public ArrayList<Season> getByListSeasonId(int hotelId) {
         return this.seasonDao.getByListSeasonId(hotelId);
+    }
+
+    //combo box için alıyoruz
+    public ArrayList<String> getAllHotelNames() {
+        ArrayList<String> hotelNames = new ArrayList<>();
+        ArrayList<Hotel> hotels = this.hotelDao.findAll();
+        for (Hotel hotel : hotels) {
+            hotelNames.add(hotel.getHotelName());
+        }
+        return hotelNames;
     }
 }
