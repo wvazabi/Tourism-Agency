@@ -2,9 +2,7 @@ package view;
 
 import business.HotelManager;
 import core.Helper;
-import dao.HotelDao;
 import entity.Hotel;
-import entity.Role;
 import entity.Star;
 import entity.User;
 
@@ -35,6 +33,8 @@ public class EmployeeView extends Layout {
     private JButton btn_delete_hotel;
     private JPanel pnl_add_delete_hotel;
     private JTable tbl_hotel_list;
+    private JTable tbl_season;
+    private JScrollPane scrl_pane_season;
     private Object [] row_hotel_list;
 
     private DefaultComboBoxModel<Star> cmbModel;
@@ -66,6 +66,25 @@ public class EmployeeView extends Layout {
         loadHotelTable();
 
 
+
+    }
+
+    public void loadSeasonTable(ArrayList<Object[]> seasonList) {
+        this.col_season = new Object[]{"Season ID","Hotel Name", "Hotel ID","Start Date","Finish Date","Yakıt Türü ","Vites"};
+
+
+    }
+
+    public void loadModelTable(ArrayList<Object[]> modelList) {
+        this.col_model = new Object[]{"Model ID","Marka", "Model Adı","Tip","Yıl","Yakıt Türü ","Vites"};
+        if(modelList ==null){
+            modelList = this.modelManager.getForTable(this.col_model.length,this.modelManager.findAll());
+        }
+
+        this.createTable(this.tmdl_model, this.tbl_model, this.col_model, modelList);
+    }
+
+    public void loadSeasonComponent() {
 
     }
 
