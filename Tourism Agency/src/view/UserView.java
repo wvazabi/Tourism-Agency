@@ -6,9 +6,6 @@ import entity.Role;
 import entity.User;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class UserView extends Layout {
     private JTextField fld_username;

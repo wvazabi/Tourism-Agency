@@ -1,6 +1,6 @@
 package entity;
 
-public class User {
+public class Hotel {
 
     private int id;
     private String username;

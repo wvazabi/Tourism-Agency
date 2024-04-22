@@ -1,9 +1,6 @@
-import core.Db;
 import core.Helper;
-import entity.Role;
 import entity.User;
-import view.AdminView;
-import view.LoginView;
+import view.EmployeeView;
 
 public class App {
     public static void main(String[] args) {
@@ -11,9 +8,9 @@ public class App {
         Helper.setTheme();
         //Db.getInstance();
         //LoginView loginView = new LoginView();
-        User dummyUser = new User("enes","1234", Role.ADMIN);
-        AdminView adminView = new AdminView(dummyUser);
-
+//        User dummyUser = new User("enes","1234", Role.ADMIN);
+//        AdminView adminView = new AdminView(dummyUser);
+        EmployeeView employeeView = new EmployeeView();
 
     }
 

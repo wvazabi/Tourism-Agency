@@ -8,6 +8,7 @@ public class Hotel {
     private String hotelMail;
     private String hotelPhone;
     private String hotelStar;
+    private boolean hotelCarParking;
     private boolean hotelWifi;
     private boolean hotelPool;
     private boolean hotelFitness;
@@ -18,7 +19,7 @@ public class Hotel {
     public Hotel() {
     }
 
-    public Hotel(String hotelName, String hotelAddress, String hotelMail, String hotelPhone, String hotelStar, boolean hotelWifi, boolean hotelPool, boolean hotelFitness, boolean hotelConcierge, boolean hotelSpa, boolean hotelRoomService) {
+    public Hotel(String hotelName, String hotelAddress, String hotelMail, String hotelPhone, String hotelStar, boolean hotelWifi, boolean hotelPool, boolean hotelFitness, boolean hotelConcierge, boolean hotelSpa, boolean hotelRoomService,boolean hotelCarParking) {
         this.hotelName = hotelName;
         this.hotelAddress = hotelAddress;
         this.hotelMail = hotelMail;
@@ -27,6 +28,7 @@ public class Hotel {
         this.hotelWifi = hotelWifi;
         this.hotelPool = hotelPool;
         this.hotelFitness = hotelFitness;
+        this.hotelCarParking = hotelCarParking;
         this.hotelConcierge = hotelConcierge;
         this.hotelSpa = hotelSpa;
         this.hotelRoomService = hotelRoomService;
@@ -40,8 +42,45 @@ public class Hotel {
 //        this.hotelId = hotelId;
 //    }
 
+
+    public boolean isHotelCarParking() {
+        return hotelCarParking;
+    }
+
+    public void setHotelCarParking(boolean hotelCarParking) {
+        this.hotelCarParking = hotelCarParking;
+    }
+
+    public boolean isHotelWifi() {
+        return hotelWifi;
+    }
+
+    public boolean isHotelPool() {
+        return hotelPool;
+    }
+
+    public boolean isHotelFitness() {
+        return hotelFitness;
+    }
+
+    public boolean isHotelConcierge() {
+        return hotelConcierge;
+    }
+
+    public boolean isHotelSpa() {
+        return hotelSpa;
+    }
+
+    public boolean isHotelRoomService() {
+        return hotelRoomService;
+    }
+
     public String getHotelName() {
         return hotelName;
+    }
+
+    public void setHotelId(int hotelId) {
+        this.hotelId = hotelId;
     }
 
     public void setHotelName(String hotelName) {
