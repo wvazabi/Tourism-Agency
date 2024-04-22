@@ -71,14 +71,14 @@ public class HotelManager {
 //        return this.userDao.update(user);
 //    }
 
-//    public boolean delete(int id) {
-//
-//        if(this.getById(id) == null){
-//            Helper.showMsg("notFound");
-//            return false;
-//        }
-//        return this.userDao.delete(id);
-//    }
+    public boolean delete(int id) {
+
+        if(this.getById(id) == null){
+            Helper.showMsg("notFound");
+            return false;
+        }
+        return this.hotelDao.delete(id);
+    }
 
     public Hotel getById(int id) {
         return this.hotelDao.getById(id);

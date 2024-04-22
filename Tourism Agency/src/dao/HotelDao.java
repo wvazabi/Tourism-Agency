@@ -123,18 +123,18 @@ public class HotelDao {
 //
 //    }
 //TODO delete
-//    public boolean delete(int id) {
-//        String query = "DELETE FROM public.user WHERE user_id =?";
-//        try {
-//            PreparedStatement pr = con.prepareStatement(query);
-//            pr.setInt(1, id);
-//            return pr.executeUpdate() != -1;
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return true;
-//    }
+    public boolean delete(int id) {
+        String query = "DELETE FROM public.hotel WHERE hotel_id =?";
+        try {
+            PreparedStatement pr = con.prepareStatement(query);
+            pr.setInt(1, id);
+            return pr.executeUpdate() != -1;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
 
     public Hotel getById(int id) {
         Hotel obj = null;

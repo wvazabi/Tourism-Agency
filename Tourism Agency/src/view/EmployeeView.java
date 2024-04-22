@@ -88,9 +88,24 @@ public class EmployeeView extends Layout {
     }
 
     public void loadHotelComponent() {
-        this.tableRowSelect(tbl_hotel_list);
-        int selectedHotelId = this.getTableSelectedRow(tbl_hotel_list, 0);
-        fld_dlt_hotel_id.setText(String.valueOf(selectedHotelId));
+      
+
+        btn_delete_hotel.addActionListener(e -> {
+            if(Helper.isFieldEmpty(fld_dlt_hotel_id)) {
+                Helper.showMsg("fill");
+            } else {
+                if (Helper.confirm("sure")) {
+                    int hotel_id = Integer.parseInt(fld_dlt_hotel_id.getText());
+                    if(this.hotelManager.delete(hotel_id)) {
+                        Helper.showMsg("done");
+                        loadHotelTable();
+                        fld_dlt_hotel_id.setText(null);
+                    } else {
+                        Helper.showMsg("error");
+                    }
+                }
+            }
+        });
 
 
 
