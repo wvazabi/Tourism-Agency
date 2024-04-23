@@ -80,9 +80,9 @@ public class RoomDao {
                 "television," +
                 "minibar," +
                 "game_console," +
-                "cash_box" +
+                "cash_box " +
                 ")" +
-                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         try {
             PreparedStatement pr = con.prepareStatement(query);
