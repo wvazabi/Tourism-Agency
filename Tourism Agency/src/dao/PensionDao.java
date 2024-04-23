@@ -3,6 +3,7 @@ package dao;
 import core.Db;
 import entity.Pension;
 import entity.Pension;
+import entity.Season;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -122,6 +123,22 @@ public class PensionDao {
         pension.setHotelId(rs.getInt("hotel_id"));
         pension.setPensionType(rs.getString("pension_type"));
 
+        return pension;
+    }
+
+    public ArrayList<Pension> findByHotelId(int hotelId) {
+        String query = "SELECT * FROM public.pension WHERE hotel_id = ?";
+        ArrayList<Pension> pension = new ArrayList<>();
+        try {
+            PreparedStatement pr = con.prepareStatement(query);
+            pr.setInt(1, hotelId);
+            ResultSet rs = pr.executeQuery();
+            while (rs.next()) {
+                pension.add(this.match(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return pension;
     }
 

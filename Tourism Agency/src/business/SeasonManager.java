@@ -64,6 +64,10 @@ public class SeasonManager {
         return this.seasonDao.delete(id);
     }
 
+    public ArrayList<Season> findByHotelId(int hotelId) {
+        return this.seasonDao.findByHotelId(hotelId);
+    }
+
     public ArrayList<Season> getByListSeasonId(int hotelId) {
         return this.seasonDao.getByListSeasonId(hotelId);
     }

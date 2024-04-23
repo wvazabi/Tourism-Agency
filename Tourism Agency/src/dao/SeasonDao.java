@@ -141,4 +141,21 @@ public class SeasonDao {
 
         return season;
     }
+
+    public ArrayList<Season> findByHotelId(int hotelId) {
+        String query = "SELECT * FROM public.season WHERE hotel_id = ?";
+        ArrayList<Season> seasons = new ArrayList<>();
+        try {
+            PreparedStatement pr = con.prepareStatement(query);
+            pr.setInt(1, hotelId);
+            ResultSet rs = pr.executeQuery();
+            while (rs.next()) {
+                seasons.add(this.match(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return seasons;
+    }
+
 }

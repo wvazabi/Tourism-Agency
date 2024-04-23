@@ -7,6 +7,7 @@ import dao.PensionDao;
 import dao.UserDao;
 import entity.Hotel;
 import entity.Pension;
+import entity.Season;
 
 import java.util.ArrayList;
 
@@ -71,6 +72,10 @@ public class PensionManager {
             return false;
         }
         return this.pensionDao.delete(id);
+    }
+
+    public ArrayList<Pension> findByHotelId(int hotelId) {
+        return this.pensionDao.findByHotelId(hotelId);
     }
 
 //    public ArrayList<Pension> getByListpensionId(int hotelId) {

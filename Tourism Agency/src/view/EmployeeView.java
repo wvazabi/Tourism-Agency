@@ -133,6 +133,58 @@ public class EmployeeView extends Layout {
         };
 
         this.roomMenu = new JPopupMenu();
+
+        roomMenu.add("Add").addActionListener(e -> {
+
+            RoomSaveView roomSaveView = new RoomSaveView(new Room());
+
+
+            roomSaveView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    loadRoomTable(null);
+                    loadPensionTable(null);
+                    loadSeasonTable(null);
+                    loadHotelTable();
+
+                }
+            });
+
+        });
+        roomMenu.add("Delete").addActionListener(e -> {
+            if(Helper.confirm("sure")){
+                int selectRoomId   = this.getTableSelectedRow(tbl_room,0);
+                if(this.roomManager.delete(selectRoomId)){
+                    Helper.showMsg("done","");
+
+                    loadRoomTable(null);
+                    loadPensionTable(null);
+                    loadSeasonTable(null);
+                    loadHotelTable();
+                }else {
+                    Helper.showMsg("error");
+                }
+            }
+        });
+
+        roomMenu.add("Update").addActionListener(e -> {
+
+            int selectRoomId   = this.getTableSelectedRow(tbl_room,0);
+            RoomSaveView roomSaveView = new RoomSaveView(this.roomManager.getById(selectRoomId));
+            roomSaveView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    loadRoomTable(null);
+                    loadPensionTable(null);
+                    loadSeasonTable(null);
+                    loadHotelTable();
+
+                }
+            });
+
+        });
+
+        tbl_room.setComponentPopupMenu(roomMenu);
     }
 
     private void loadPensionComponent() {
