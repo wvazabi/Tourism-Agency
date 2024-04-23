@@ -83,6 +83,7 @@ public class EmployeeView extends Layout {
         this.hotelManager = new HotelManager();
         this.seasonManager = new SeasonManager();
         this.pensionManager = new PensionManager();
+        this.roomManager = new RoomManager();
         this.user = user;
 
 
@@ -101,9 +102,37 @@ public class EmployeeView extends Layout {
         loadPensionComponent();
         loadPensionTable(null);
 
+        loadRoomComponent();
+        loadRoomTable(null);
 
 
 
+
+    }
+
+    private void loadRoomTable(ArrayList<Object[]> roomList) {
+
+        this.col_room = new Object[]{"Room ID","Hotel Name","Hotel ID","Pension Type","Pension ID", "Season Period","Room Type","Stock","Adult Price", "Child Price", "Bed Capacity", "Square Meter", "TV", "Minibar", "Game Console", "Cash Box"};
+
+        if(roomList == null){
+            roomList = this.roomManager.getForTable(this.col_room.length, this.roomManager.findAll());
+        }
+
+        this.createTable(this.tmdl_room, this.tbl_room, this.col_room, roomList);
+
+
+    }
+
+    private void loadRoomComponent() {
+        this.tableRowSelect(tbl_room);
+        tmdl_room = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) { // Sadece belirli bir sütunun düzenlenemez olmasını sağlar
+                return column != 1; // 1. sütun (sütun indeksi 0) dışındaki tüm sütunlar düzenlenebilir olacak
+            }
+        };
+
+        this.roomMenu = new JPopupMenu();
     }
 
     private void loadPensionComponent() {

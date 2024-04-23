@@ -32,6 +32,12 @@ public class PensionDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        if (obj == null) {
+            // Belirli bir kimlik numarasına sahip bir pansiyon bulunamadığında, varsayılan bir pansiyon nesnesi veya değeri döndürün
+            obj = new Pension(); // Varsayılan bir Pension nesnesi oluşturabilirsiniz veya null yerine başka bir değer döndürebilirsiniz
+            obj.setHotelId(3);
+            obj.setPensionType("null");
+        }
         return obj;
 
     }

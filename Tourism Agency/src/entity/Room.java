@@ -51,6 +51,10 @@ public class Room {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getHotelId() {
         return hotelId;
     }

@@ -1,10 +1,13 @@
 package dao;
 
 import core.Db;
+import entity.Pension;
 import entity.Season;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class SeasonDao {
 
@@ -30,6 +33,14 @@ public class SeasonDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        if (obj == null) {
+            // Belirli bir kimlik numarasına sahip bir pansiyon bulunamadığında, varsayılan bir pansiyon nesnesi veya değeri döndürün
+            obj = new Season(); // Varsayılan bir Pension nesnesi oluşturabilirsiniz veya null yerine başka bir değer döndürebilirsiniz
+            obj.setHotelId(3);
+            obj.setStartDate(LocalDate.now());
+            obj.setFinishDate(LocalDate.now());
+
         }
         return obj;
 
