@@ -1,20 +1,17 @@
 package view;
 
 import business.HotelManager;
+import business.PensionManager;
+import business.RoomManager;
 import business.SeasonManager;
 import core.Helper;
-import entity.Hotel;
-import entity.Season;
-import entity.Star;
-import entity.User;
+import entity.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class EmployeeView extends Layout {
     private JPanel container;
@@ -39,35 +36,55 @@ public class EmployeeView extends Layout {
     private JTable tbl_hotel_list;
     private JTable tbl_season;
     private JScrollPane scrl_pane_season;
+    private JTable tbl_room;
+    private JScrollPane scrl_pane_room;
+    private JPanel pnl_pension;
+    private JTable tbl_pension;
+    private JScrollPane scl_pane_pension;
 
 
     private DefaultComboBoxModel<Star> cmbModel;
 
 
     private Object[] col_season;
+    private Object[] col_room;
+    private Object[] col_pension;
+
+
     //private Object[] col_hotel;
     private Object [] row_hotel_list;
+    private Object [] row_pension_list;
 
     private Hotel hotel;
     private User user;
     private Season season;
+    private Room room;
+    private Pension pension;
 
     //Tablolar üzerinde işlem yapabilmemiz için table modellere ihtiyacımız var
     private DefaultTableModel tmdl_hotel;
     private DefaultTableModel tmdl_season;
+    private DefaultTableModel tmdl_room;
+    private DefaultTableModel tmdl_pension;
 
     private JPopupMenu hotelMenu;
     private JPopupMenu seasonMenu;
+    private JPopupMenu roomMenu;
+    private JPopupMenu pensionMenu;
 
     private HotelManager hotelManager;
     private SeasonManager seasonManager;
+    private RoomManager roomManager;
+    private PensionManager pensionManager;
 
     public EmployeeView(User user) {
         this.add(container);
         this.guiInitilaze(1500,750,"Employee Management");
         this.hotelManager = new HotelManager();
         this.seasonManager = new SeasonManager();
+        this.pensionManager = new PensionManager();
         this.user = user;
+
 
         this.lbl_welcome.setText("Welcome employee user: " + user.getUsername().toUpperCase());
         btn_logout.addActionListener(e -> {
@@ -81,9 +98,86 @@ public class EmployeeView extends Layout {
         loadSeasonComponent();
         loadSeasonTable(null);
 
+        loadPensionComponent();
+        loadPensionTable(null);
+
+
 
 
     }
+
+    private void loadPensionComponent() {
+        this.tableRowSelect(tbl_pension);
+        tmdl_pension = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) { // Sadece belirli bir sütunun düzenlenemez olmasını sağlar
+                return column != 1; // 1. sütun (sütun indeksi 0) dışındaki tüm sütunlar düzenlenebilir olacak
+            }
+        };
+
+        this.pensionMenu = new JPopupMenu();
+
+        pensionMenu.add("Add").addActionListener(e -> {
+
+            PensionView pensionView = new PensionView(new Pension());
+
+
+            pensionView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    loadPensionTable(null);
+                    loadHotelTable();
+
+                }
+            });
+
+        });
+        pensionMenu.add("Delete").addActionListener(e -> {
+            if(Helper.confirm("sure")){
+                int selectPensionId   = this.getTableSelectedRow(tbl_pension,0);
+                if(this.pensionManager.delete(selectPensionId)){
+                    Helper.showMsg("done","");
+
+                    loadPensionTable(null);
+                    loadHotelTable();
+                }else {
+                    Helper.showMsg("error");
+                }
+            }
+        });
+
+        pensionMenu.add("Update").addActionListener(e -> {
+
+            int selectPensionId   = this.getTableSelectedRow(tbl_pension,0);
+            PensionView pensionView = new PensionView(this.pensionManager.getById(selectPensionId));
+            pensionView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    loadPensionTable(null);
+                    loadHotelTable();
+
+                }
+            });
+
+        });
+
+        tbl_pension.setComponentPopupMenu(pensionMenu);
+    }
+
+    private void loadPensionTable(ArrayList<Object[]> pensionList) {
+
+        this.col_pension = new Object[]{"Pension ID","Hotel Name","Hotel ID","Pension Type"};
+
+        if(pensionList == null){
+            pensionList = this.pensionManager.getForTable(this.col_pension.length, this.pensionManager.findAll());
+        }
+
+        this.createTable(this.tmdl_pension, this.tbl_pension, this.col_pension, pensionList);
+
+
+
+    }
+
 
     public void loadSeasonTable(ArrayList<Object[]> seasonList) {
         this.col_season = new Object[]{"Season ID","Hotel Name","Hotel ID","Start Date","Finish Date"};
@@ -118,6 +212,8 @@ public class EmployeeView extends Layout {
                 @Override
                 public void windowClosed(WindowEvent e) {
                     loadSeasonTable(null);
+                    loadHotelTable();
+
                 }
             });
 
@@ -146,6 +242,8 @@ public class EmployeeView extends Layout {
                 @Override
                 public void windowClosed(WindowEvent e) {
                    loadSeasonTable(null);
+                    loadHotelTable();
+
                 }
             });
 
