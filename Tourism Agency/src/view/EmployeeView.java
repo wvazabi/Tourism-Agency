@@ -1,19 +1,13 @@
 package view;
 
-import business.HotelManager;
-import business.PensionManager;
-import business.RoomManager;
-import business.SeasonManager;
+import business.*;
 import core.Helper;
 import entity.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -75,6 +69,10 @@ public class EmployeeView extends Layout {
     private JLabel lbl_total_amaount;
     private JTextField fld_total_amount;
     private JButton btn_make_reservation;
+    private JTable tbl_reservation;
+    private JTextField fld_reservation_id;
+    private JButton btn_delete_reservation;
+    private JScrollPane srl;
     double totalCost;
 
 
@@ -95,11 +93,13 @@ public class EmployeeView extends Layout {
     private Object [] row_reservation_list;
 
 
+
     private Hotel hotel;
     private User user;
     private Season season;
     private Room room;
     private Pension pension;
+    private Reservation reservation;
 
     //Tablolar üzerinde işlem yapabilmemiz için table modellere ihtiyacımız var
     private DefaultTableModel tmdl_hotel;
@@ -107,6 +107,7 @@ public class EmployeeView extends Layout {
     private DefaultTableModel tmdl_room;
     private DefaultTableModel tmdl_pension;
     private DefaultTableModel tmdl_room_search;
+    private DefaultTableModel tmdl_reservation;
 
     private JPopupMenu hotelMenu;
     private JPopupMenu seasonMenu;
@@ -117,6 +118,24 @@ public class EmployeeView extends Layout {
     private SeasonManager seasonManager;
     private RoomManager roomManager;
     private PensionManager pensionManager;
+    private ReservationManager reservationManager;
+
+    String selectedRoomId;
+
+
+
+
+
+    String checkInDate;
+    String checkOutDate;
+    int numberOfAdults;
+    int numberOfChildren;
+    String selectedHotelName;
+    int selectedPensionId;
+    long numberOfNights;
+
+
+
 
     public EmployeeView(User user) {
         this.add(container);
@@ -125,6 +144,7 @@ public class EmployeeView extends Layout {
         this.seasonManager = new SeasonManager();
         this.pensionManager = new PensionManager();
         this.roomManager = new RoomManager();
+        this.reservationManager = new ReservationManager();
         this.user = user;
 
         this.fld_srch_check_in.setText(LocalDate.now().toString());
@@ -152,10 +172,19 @@ public class EmployeeView extends Layout {
 
         loadRoomSearchComponent();
         loadRoomSearchTable(null);
-
+        
+        loadReservationComponent();
+        loadReservationTable();
 
 
     }
+
+    private void loadReservationTable() {
+    }
+
+    private void loadReservationComponent() {
+    }
+
 
     private void loadRoomSearchTable(ArrayList<Object[]> roomList) {
         // 9 line
@@ -169,6 +198,8 @@ public class EmployeeView extends Layout {
     }
 
     private void loadRoomSearchComponent() {
+
+
         this.tableRowSelect(tbl_room_list);
         tmdl_room_search = new DefaultTableModel() {
             @Override
@@ -177,25 +208,27 @@ public class EmployeeView extends Layout {
             }
         };
 
+
+
         // Seçilen room un bilgilerini getirir
         tbl_room_list.getSelectionModel().addListSelectionListener(e -> {
             try {
-                String selectedRoomId = tbl_room_list.getValueAt(tbl_room_list.getSelectedRow(),0).toString();
+                this.selectedRoomId = tbl_room_list.getValueAt(tbl_room_list.getSelectedRow(),0).toString();
                 fld_selected_room_id.setText(selectedRoomId);
-                String checkInDate = fld_srch_check_in.getText();
-                String checkOutDate = fld_srch_check_out.getText();
+                this.checkInDate = fld_srch_check_in.getText();
+                this.checkOutDate = fld_srch_check_out.getText();
                 fld_check_in_date.setText(checkInDate);
                 fld_check_out_date.setText(fld_srch_check_out.getText());
-                int numberOfAdults = Integer.parseInt(cmb_room_srch_adult_count.getSelectedItem().toString());
-                int numberOfChildren = Integer.parseInt(cmb_room_srch_child_count.getSelectedItem().toString());
+                this.numberOfAdults = Integer.parseInt(cmb_room_srch_adult_count.getSelectedItem().toString());
+                this.numberOfChildren = Integer.parseInt(cmb_room_srch_child_count.getSelectedItem().toString());
                 fld_number_of_adults.setText(String.valueOf(numberOfAdults));
                 fld_number_of_child.setText(String.valueOf(numberOfChildren));
-                String selectedHotelName =  tbl_room_list.getValueAt(tbl_room_list.getSelectedRow(),1).toString();
+                this.selectedHotelName =  tbl_room_list.getValueAt(tbl_room_list.getSelectedRow(),1).toString();
                 fld_hotel_name.setText(selectedHotelName);
-                int selectedPensionId = this.roomManager.getById(Integer.parseInt(selectedRoomId)).getPensionId();
+                this.selectedPensionId = this.roomManager.getById(Integer.parseInt(selectedRoomId)).getPensionId();
                 fld_pension_type.setText(this.pensionManager.getById(selectedPensionId).getPensionType());
                 // 2 Date arasındaki gün farkını hesaplar
-                long numberOfNights = ChronoUnit.DAYS.between(LocalDate.parse(checkInDate), LocalDate.parse(checkOutDate));
+                this.numberOfNights = ChronoUnit.DAYS.between(LocalDate.parse(checkInDate), LocalDate.parse(checkOutDate));
                 fld_number_of_nights.setText(String.valueOf(numberOfNights));
                 this.room = this.roomManager.getById(Integer.parseInt(selectedRoomId));
                 this.totalCost = ((this.room.getAdultPrice() * numberOfAdults) + (this.room.getChildPrice() * numberOfChildren)) * numberOfNights;
@@ -203,14 +236,34 @@ public class EmployeeView extends Layout {
                 System.out.println(totalCost);
 
 
+
+
             } catch (Exception ignored){
             }
         });
 
         btn_make_reservation.addActionListener(e -> {
+            reservation = new Reservation();
+            reservation.setGuestCount(this.numberOfAdults + this.numberOfChildren);
+            reservation.setTotalPrice(this.totalCost);
+            reservation.setRoomId(Integer.parseInt(selectedRoomId));
+            reservation.setGuestCitizenId(Integer.parseInt(this.fld_citizen_id.getText()));
+            reservation.setGuestMail(this.fld_email.getText());
+            reservation.setCheckInDate(LocalDate.parse(this.checkInDate));
+            reservation.setCheckOutDate(LocalDate.parse(this.checkOutDate));
+            reservation.setGuestPhone(this.fld_phone_number.getText());
+            reservation.setGuestName(this.fld_name_surname.getText());
+
+            this.reservationManager.save(reservation);
+
+
+
+
 
 
         });
+
+
 
     }
 
