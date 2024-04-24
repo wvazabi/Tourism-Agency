@@ -6,6 +6,45 @@
 
 The operational logic of the Tourism Agency is as follows: It offers a wide range of digital panels to manage hotels, room types, board types, periods, prices, and reservations.
 
+## How to Run
+---
+
+To run this project, follow these steps:
+
+1. Make sure you have Java 8 or later installed on your system.
+
+2. Install PostgreSQL database on your machine. You can use the provided SQL file `Tourism_Agency_db_Enes_Kaya.sql` to set up the database.
+
+3. Import the `Tourism_Agency_db_Enes_Kaya.sql` file into your PostgreSQL database.
+
+4. Clone this repository to your local machine.
+
+5. Open the project in your preferred Java development environment (e.g., IntelliJ IDEA).
+
+6. Build and run the project.
+
+7. You can now use the application.
+
+## System Requirements
+
+- Java 8 or later
+- PostgreSQL database
+
+## Technologies Used
+---
+
+This project utilizes the following technologies:
+
+- **Java Swing:** Utilized for the user interface design.
+- **Object-Oriented Programming (OOP):** The project architecture is designed following object-oriented programming principles.
+- **Java:** Backend development is carried out using the Java programming language.
+- **PostgreSQL:** Used for database management and data storage.
+- **pgAdmin 4:** Employed as the PostgreSQL database management tool.
+- **SQL:** Utilized for executing database queries and operations.
+- **IntelliJ IDEA:** Used as the integrated development environment (IDE) for Java.
+- **GitHub:** Project files and codes are hosted on GitHub.
+- **Git:** Version control and collaboration are facilitated using Git.
+
 ### User Credentials
 ----------------------
 
