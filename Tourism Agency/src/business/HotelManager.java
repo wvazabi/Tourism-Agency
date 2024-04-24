@@ -3,11 +3,8 @@ package business;
 import core.Helper;
 import dao.HotelDao;
 import entity.Hotel;
-import entity.User;
-
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class HotelManager {
 
@@ -17,19 +14,17 @@ public class HotelManager {
         this.hotelDao = new HotelDao();
     }
 
-//    public Hotel findByLogin(String username, String password) {
-//        //different methods can be use FOR filter
-//        return this.userDao.findByLogin(username,password);
-//    }
-
+    // Method to retrieve all hotels from the database
     public ArrayList<Hotel> findAll() {
         return hotelDao.findAll();
     }
+
+    // Method to retrieve hotels based on a specific query
     public ArrayList<Hotel> findAll(String query) {
         return hotelDao.findAll(query);
     }
 
-    // tablodaki her satır için row object oluşturulup hotel lsitesine atanıyor
+    // Method to create row objects for each hotel in the table
     public ArrayList<Object[]> getForTable(int size, ArrayList<Hotel> hotels) {
         ArrayList<Object[]> hotelList = new ArrayList<>();
         for (Hotel obj : hotels) {
@@ -50,13 +45,13 @@ public class HotelManager {
             rowObject[i++] = obj.getHotelSpa();
             rowObject[i++] = obj.getHotelRoomService();
 
-
             hotelList.add(rowObject);
         }
 
         return hotelList;
     }
 
+    // Method to save a new hotel
     public boolean save(Hotel hotel) {
         if (hotel.getHotelId() != 0) {
             Helper.showMsg("error");
@@ -65,6 +60,7 @@ public class HotelManager {
         return this.hotelDao.save(hotel);
     }
 
+    // Method to update an existing hotel
     public boolean update(Hotel hotel) {
         if (this.getById(hotel.getHotelId()) == null) {
             Helper.showMsg("notFound");
@@ -73,25 +69,22 @@ public class HotelManager {
         return this.hotelDao.update(hotel);
     }
 
+    // Method to delete a hotel by its ID
     public boolean delete(int id) {
-
-        if(this.getById(id) == null){
+        if (this.getById(id) == null) {
             Helper.showMsg("notFound");
             return false;
         }
         return this.hotelDao.delete(id);
     }
 
+    // Method to retrieve a hotel by its ID
     public Hotel getById(int id) {
         return this.hotelDao.getById(id);
     }
 
+    // Method to search for hotels based on a query
     public String searchHotelByQuery(String name, String address, String star) {
-
         return this.hotelDao.searchHotelByQuery(name, address, star);
     }
-
-
-
-
 }

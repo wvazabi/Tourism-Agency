@@ -5,8 +5,9 @@ import java.awt.*;
 
 public class Helper {
 
+    // Method to set the look and feel of the UI to Nimbus
     public static void setTheme() {
-        // info döndürecek UI Manager set look and Feel i nimbus yapıyoruz
+        // Setting look and feel to Nimbus
         for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
             if ("Nimbus".equals(info.getName())) {
                 try {
@@ -20,6 +21,7 @@ public class Helper {
         }
     }
 
+    // Method to check if an array of JTextFields is empty
     public static boolean isFieldListEmpty(JTextField[] fieldList){
         for (JTextField field :fieldList){
             if(isFieldEmpty(field)) return true;
@@ -27,11 +29,12 @@ public class Helper {
         return false;
     }
 
-    //Static method textfielddların boş olup olmadığının kontrol eden boşsa true döndüren method
+    // Static method to check if a JTextField is empty
     public static boolean isFieldEmpty(JTextField field) {
         return field.getText().trim().isEmpty();
     }
 
+    // Method to display a message dialog with a given message and title
     public static void showMsg(String str, String title) {
         String msg;
         String header = title;
@@ -47,6 +50,7 @@ public class Helper {
             case "error":
                 msg = "Error";
                 header = "Error Message";
+                break;
             default:
                 msg = str;
                 header = title;
@@ -58,6 +62,7 @@ public class Helper {
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
+    // Method to display a message dialog with a given message
     public static void showMsg(String str) {
         String msg;
         String header;
@@ -89,6 +94,7 @@ public class Helper {
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
+    // Method to set the location of a window
     public static int setLoc(String type, Dimension size) {
 
         switch (type) {
@@ -101,20 +107,15 @@ public class Helper {
         }
     }
 
-
-    //Kullanıcıya kritik işlemlerde yes no sormak için
+    // Method to ask the user for confirmation
     public static boolean confirm(String str) {
         String msg;
         if (str.equals("sure")) {
             msg = "Are you sure !!";
-
         } else {
             msg = str;
         }
-        // 0 sa ture göndercek
+        // If user clicks yes, return true
         return JOptionPane.showConfirmDialog(null, msg, "Are you sure?", JOptionPane.YES_NO_OPTION) == 0;
-
     }
-
-
 }

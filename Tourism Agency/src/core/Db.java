@@ -3,22 +3,23 @@ package core;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 
 public class Db {
 
-    // static olarak nesne tanımlanıyor
+    // Object is defined as static
     private static Db instance = null;
     private Connection connection = null;
     private final String DB_URL = "jdbc:postgresql://localhost:5432/tourismagency";
     private final String DB_USERNAME = "postgres";
     private final String DB_PASS = "1234";
 
-// Constructer'ı private yazıyoruz dışardan ulaşılmasın diye
+    // Constructor is set to private to prevent external access
     private Db() {
         try {
-            this.connection = DriverManager.getConnection(DB_URL,DB_USERNAME,DB_PASS);
+            // Establishing a connection to the database
+            this.connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASS);
         } catch (SQLException e) {
+            // Printing error message if connection fails
             System.out.println(e.getMessage());
         }
     }
@@ -27,22 +28,20 @@ public class Db {
         return connection;
     }
 
-    // nesne üretmeden metoda ulaşmak istiyoruz ondan static kullanıyoruz
-
-    //Singleton design pattern
-    //hafızada birkere oluşsun her defasında oluşanı versin
-
+    // Accessing the method without creating an object, hence using static
+    // Singleton design pattern: Ensures only one instance of the class is created
     public static Connection getInstance() {
 
         try {
+            // Creating a new instance if it's null or closed
             if (instance == null || instance.getConnection().isClosed()) {
                 instance = new Db();
             }
         } catch (SQLException e) {
+            // Handling SQL exceptions
             throw new RuntimeException(e);
         }
+        // Returning the connection
         return instance.getConnection();
-
     }
-
 }
