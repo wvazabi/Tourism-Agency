@@ -69,7 +69,7 @@ public class RoomSaveView extends Layout {
         }
     }
 
-    private void initializeRoomTypeComboBox() {
+    private void initializeRoomTypeComboBox()  {
         for (Room roomCmb : this.roomManager.findAll()) {
             this.cmb_room_type.addItem(new ComboItem(roomCmb.getId(), roomCmb.getType()));
         }
