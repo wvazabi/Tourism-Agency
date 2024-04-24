@@ -6,8 +6,6 @@ import entity.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.LocalDate;
@@ -72,7 +70,7 @@ public class EmployeeView extends Layout {
     private JTextField fld_total_amount;
     private JButton btn_make_reservation;
     private JTable tbl_reservation;
-    private JTextField fld_reservation_id;
+    private JTextField fld_reservation_id_delete;
     private JButton btn_delete_reservation;
     private JScrollPane srl;
     double totalCost;
@@ -184,6 +182,7 @@ public class EmployeeView extends Layout {
                 LoginView loginView = new LoginView();
 
         });
+
     }
 
     private void loadReservationTable(ArrayList<Object[]> reservationList) {
@@ -205,6 +204,45 @@ public class EmployeeView extends Layout {
                 return column != 1; // 1. sütun (sütun indeksi 0) dışındaki tüm sütunlar düzenlenebilir olacak
             }
         };
+
+        // Seçtiğimiz satırdaki id'yi fld_user_id kutucuğuna getirir.
+        tbl_reservation.getSelectionModel().addListSelectionListener(e -> {
+            try {
+                String select_reservation_id = tbl_reservation.getValueAt(tbl_reservation.getSelectedRow(), 0).toString();
+                fld_reservation_id_delete.setText(select_reservation_id);
+            } catch (Exception ignored){
+            }
+        });
+
+        btn_delete_reservation.addActionListener(e -> {
+            if(Helper.isFieldEmpty(fld_reservation_id_delete)) {
+                Helper.showMsg("fill");
+            } else {
+                if (Helper.confirm("sure")) {
+                    int reservation_id = Integer.parseInt(fld_reservation_id_delete.getText());
+                    if(this.reservationManager.delete(reservation_id)) {
+                        Helper.showMsg("done");
+                        loadHotelTable();
+                        loadReservationTable(null);
+                        fld_reservation_id_delete.setText(null);
+                    } else {
+                        Helper.showMsg("error");
+                    }
+                }
+            }
+
+        });
+
+
+
+
+
+
+
+
+
+
+
     }
 
 
