@@ -39,7 +39,7 @@ public class LoginView extends Layout{
                         Helper.showMsg("Succesfully Login","Login Status");
                         AdminView adminView = new AdminView(loginUser);
                     } else {
-                        Helper.showMsg("User role should be ADMIN", "User Role Denied");
+                        EmployeeView employeeView = new EmployeeView(loginUser);
                     }
                     dispose();
                 }

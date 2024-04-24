@@ -6,6 +6,8 @@ import entity.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.LocalDate;
@@ -177,6 +179,11 @@ public class EmployeeView extends Layout {
         loadReservationTable(null);
 
 
+        btn_logout.addActionListener(e -> {
+                dispose();
+                LoginView loginView = new LoginView();
+
+        });
     }
 
     private void loadReservationTable(ArrayList<Object[]> reservationList) {
