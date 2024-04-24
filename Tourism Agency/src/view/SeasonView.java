@@ -6,6 +6,7 @@ import core.Helper;
 import entity.Hotel;
 import entity.Season;
 import core.ComboItem;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,32 +32,31 @@ public class SeasonView extends Layout {
         this.seasonManager = new SeasonManager();
         this.hotelManager = new HotelManager();
         this.season = season;
-        this.guiInitilaze(300,400,"Season Edit Update");
+        this.guiInitilaze(300, 400, "Season Edit Update");
 
         //populateHotelComboBox();
 
-        for(Hotel hotel : this.hotelManager.findAll()){
-            this.cmd_hotel_name.addItem(new ComboItem(hotel.getHotelId(),hotel.getHotelName()));
+        for (Hotel hotel : this.hotelManager.findAll()) {
+            this.cmd_hotel_name.addItem(new ComboItem(hotel.getHotelId(), hotel.getHotelName()));
         }
 
         // TODO editle
         this.fld_start_date.setText(LocalDate.now().toString());
         this.fld_finish_date.setText(LocalDate.now().toString());
 
-        if(this.season.getId() != 0){
+        if (this.season.getId() != 0) {
             this.fld_start_date.setText(startDate);
             this.fld_finish_date.setText(finishDate);
 
 
-
-            ComboItem defaultHotel = new ComboItem(this.season.getHotelId(),this.hotelManager.getById(season.getHotelId()).getHotelName());
+            ComboItem defaultHotel = new ComboItem(this.season.getHotelId(), this.hotelManager.getById(season.getHotelId()).getHotelName());
             this.cmd_hotel_name.getModel().setSelectedItem(defaultHotel);
         }
 
         btn_save_season.addActionListener(e -> {
-            if(Helper.isFieldListEmpty(new JTextField[]{this.fld_start_date,this.fld_finish_date,})){
-                Helper.showMsg("fill","");
-            }else{
+            if (Helper.isFieldListEmpty(new JTextField[]{this.fld_start_date, this.fld_finish_date,})) {
+                Helper.showMsg("fill", "");
+            } else {
                 boolean result = false;
                 ComboItem selectedHotel = (ComboItem) cmd_hotel_name.getSelectedItem();
 
@@ -64,23 +64,22 @@ public class SeasonView extends Layout {
                 this.season.setStartDate(LocalDate.parse(fld_start_date.getText()));
                 this.season.setFinishDate(LocalDate.parse(fld_finish_date.getText()));
 
-                if(this.season.getId() != 0){
+                if (this.season.getId() != 0) {
                     result = this.seasonManager.update(this.season);
 
-                }else{
+                } else {
                     result = this.seasonManager.save(this.season);
 
                 }
-                if (result){
-                    Helper.showMsg("done","");
+                if (result) {
+                    Helper.showMsg("done", "");
                     dispose();
-                }else{
-                    Helper.showMsg("error","");
+                } else {
+                    Helper.showMsg("error", "");
                 }
             }
         });
     }
-
 
 
 }

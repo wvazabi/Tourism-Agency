@@ -7,7 +7,7 @@ import entity.User;
 
 import javax.swing.*;
 
-public class LoginView extends Layout{
+public class LoginView extends Layout {
     private JPanel container;
     private JPanel w_top;
     private JLabel lbl_title;
@@ -20,23 +20,22 @@ public class LoginView extends Layout{
     private final UserManager userManager;
 
 
-
     public LoginView() {
         this.userManager = new UserManager();
         this.add(container);
-        this.guiInitilaze(400,400,"Tourism Agency");
+        this.guiInitilaze(400, 400, "Tourism Agency");
 
         btn_login.addActionListener(e -> {
-            if(Helper.isFieldEmpty(this.fld_username) || Helper.isFieldEmpty(this.fld_pass)) {
+            if (Helper.isFieldEmpty(this.fld_username) || Helper.isFieldEmpty(this.fld_pass)) {
                 Helper.showMsg("fill");
             } else {
-                User loginUser = this.userManager.findByLogin(this.fld_username.getText(),this.fld_pass.getText());
-                if(loginUser == null) {
+                User loginUser = this.userManager.findByLogin(this.fld_username.getText(), this.fld_pass.getText());
+                if (loginUser == null) {
                     Helper.showMsg("notFound");
                 } else {
 
-                    if(loginUser.getRole() == Role.ADMIN) {
-                        Helper.showMsg("Succesfully Login","Login Status");
+                    if (loginUser.getRole() == Role.ADMIN) {
+                        Helper.showMsg("Succesfully Login", "Login Status");
                         AdminView adminView = new AdminView(loginUser);
                     } else {
                         EmployeeView employeeView = new EmployeeView(loginUser);

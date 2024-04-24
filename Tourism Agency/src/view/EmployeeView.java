@@ -86,12 +86,10 @@ public class EmployeeView extends Layout {
     private Object[] col_reservation;
 
 
-
     //private Object[] col_hotel;
-    private Object [] row_hotel_list;
-    private Object [] row_pension_list;
-    private Object [] row_reservation_list;
-
+    private Object[] row_hotel_list;
+    private Object[] row_pension_list;
+    private Object[] row_reservation_list;
 
 
     private Hotel hotel;
@@ -123,9 +121,6 @@ public class EmployeeView extends Layout {
     String selectedRoomId;
 
 
-
-
-
     String checkInDate;
     String checkOutDate;
     int numberOfAdults;
@@ -133,8 +128,6 @@ public class EmployeeView extends Layout {
     String selectedHotelName;
     int selectedPensionId;
     long numberOfNights;
-
-
 
 
     /**
@@ -213,10 +206,10 @@ public class EmployeeView extends Layout {
      */
     private void loadReservationTable(ArrayList<Object[]> reservationList) {
         // Define column headers for the reservation table
-        this.col_reservation = new Object[]{"Reservation ID","Guest ID", "Guest Name", "Guest Phone","Guest E-Mail","Hotel Name","Check-in Date", "Check-out Date","Pension Type", "Number of Night", "Number of Guest","Total Cost"};
+        this.col_reservation = new Object[]{"Reservation ID", "Guest ID", "Guest Name", "Guest Phone", "Guest E-Mail", "Hotel Name", "Check-in Date", "Check-out Date", "Pension Type", "Number of Night", "Number of Guest", "Total Cost"};
         // If reservation list is null, retrieve reservations from the database
-        if(reservationList == null){
-            reservationList = this.reservationManager.getForTable(this.col_reservation.length,this.reservationManager.findAll());
+        if (reservationList == null) {
+            reservationList = this.reservationManager.getForTable(this.col_reservation.length, this.reservationManager.findAll());
         }
 
         // Create table with provided table model, table, column headers, and reservation list
@@ -243,18 +236,18 @@ public class EmployeeView extends Layout {
             try {
                 String select_reservation_id = tbl_reservation.getValueAt(tbl_reservation.getSelectedRow(), 0).toString();
                 fld_reservation_id_delete.setText(select_reservation_id);
-            } catch (Exception ignored){
+            } catch (Exception ignored) {
             }
         });
 
         // Action listener for delete reservation button
         btn_delete_reservation.addActionListener(e -> {
-            if(Helper.isFieldEmpty(fld_reservation_id_delete)) {
+            if (Helper.isFieldEmpty(fld_reservation_id_delete)) {
                 Helper.showMsg("fill");
             } else {
                 if (Helper.confirm("sure")) {
                     int reservation_id = Integer.parseInt(fld_reservation_id_delete.getText());
-                    if(this.reservationManager.delete(reservation_id)) {
+                    if (this.reservationManager.delete(reservation_id)) {
                         Helper.showMsg("done");
                         loadHotelTable();
                         loadReservationTable(null);
@@ -277,10 +270,10 @@ public class EmployeeView extends Layout {
      */
     private void loadRoomSearchTable(ArrayList<Object[]> roomList) {
         // Define column headers for the room search table
-        this.col_roomSearch = new Object[]{"Room ID","Hotel Name", "Hotel ID", "Hotel Address/City", "Hotel Phone", "Hotel Email", "Star","Room Type", "Stock", "Bed Count"};
+        this.col_roomSearch = new Object[]{"Room ID", "Hotel Name", "Hotel ID", "Hotel Address/City", "Hotel Phone", "Hotel Email", "Star", "Room Type", "Stock", "Bed Count"};
         // If room list is null, retrieve rooms from the database
-        if(roomList == null){
-            roomList = this.roomManager.getForTableForRoomSrch(this.col_roomSearch.length,this.roomManager.findAll());
+        if (roomList == null) {
+            roomList = this.roomManager.getForTableForRoomSrch(this.col_roomSearch.length, this.roomManager.findAll());
         }
 
         // Create table with provided table model, table, column headers, and room list
@@ -306,7 +299,7 @@ public class EmployeeView extends Layout {
         // Set selected room information when a room is selected
         tbl_room_list.getSelectionModel().addListSelectionListener(e -> {
             try {
-                this.selectedRoomId = tbl_room_list.getValueAt(tbl_room_list.getSelectedRow(),0).toString();
+                this.selectedRoomId = tbl_room_list.getValueAt(tbl_room_list.getSelectedRow(), 0).toString();
                 fld_selected_room_id.setText(selectedRoomId);
                 this.checkInDate = fld_srch_check_in.getText();
                 this.checkOutDate = fld_srch_check_out.getText();
@@ -316,7 +309,7 @@ public class EmployeeView extends Layout {
                 this.numberOfChildren = Integer.parseInt(cmb_room_srch_child_count.getSelectedItem().toString());
                 fld_number_of_adults.setText(String.valueOf(numberOfAdults));
                 fld_number_of_child.setText(String.valueOf(numberOfChildren));
-                this.selectedHotelName =  tbl_room_list.getValueAt(tbl_room_list.getSelectedRow(),1).toString();
+                this.selectedHotelName = tbl_room_list.getValueAt(tbl_room_list.getSelectedRow(), 1).toString();
                 fld_hotel_name.setText(selectedHotelName);
                 this.selectedPensionId = this.roomManager.getById(Integer.parseInt(selectedRoomId)).getPensionId();
                 fld_pension_type.setText(this.pensionManager.getById(selectedPensionId).getPensionType());
@@ -327,7 +320,7 @@ public class EmployeeView extends Layout {
                 this.totalCost = ((this.room.getAdultPrice() * numberOfAdults) + (this.room.getChildPrice() * numberOfChildren)) * numberOfNights;
                 fld_total_amount.setText(String.valueOf(totalCost));
 
-            } catch (Exception ignored){
+            } catch (Exception ignored) {
             }
         });
 
@@ -361,13 +354,11 @@ public class EmployeeView extends Layout {
     }
 
 
-
-
     private void loadRoomTable(ArrayList<Object[]> roomList) {
 
-        this.col_room = new Object[]{"Room ID","Hotel Name","Hotel ID","Pension Type","Pension ID", "Season Period","Room Type","Stock","Adult Price", "Child Price", "Bed Capacity", "Square Meter", "TV", "Minibar", "Game Console", "Cash Box"};
+        this.col_room = new Object[]{"Room ID", "Hotel Name", "Hotel ID", "Pension Type", "Pension ID", "Season Period", "Room Type", "Stock", "Adult Price", "Child Price", "Bed Capacity", "Square Meter", "TV", "Minibar", "Game Console", "Cash Box"};
 
-        if(roomList == null){
+        if (roomList == null) {
             roomList = this.roomManager.getForTable(this.col_room.length, this.roomManager.findAll());
         }
 
@@ -405,16 +396,16 @@ public class EmployeeView extends Layout {
 
         });
         roomMenu.add("Delete").addActionListener(e -> {
-            if(Helper.confirm("sure")){
-                int selectRoomId   = this.getTableSelectedRow(tbl_room,0);
-                if(this.roomManager.delete(selectRoomId)){
-                    Helper.showMsg("done","");
+            if (Helper.confirm("sure")) {
+                int selectRoomId = this.getTableSelectedRow(tbl_room, 0);
+                if (this.roomManager.delete(selectRoomId)) {
+                    Helper.showMsg("done", "");
 
                     loadRoomTable(null);
                     loadPensionTable(null);
                     loadSeasonTable(null);
                     loadHotelTable();
-                }else {
+                } else {
                     Helper.showMsg("error");
                 }
             }
@@ -422,7 +413,7 @@ public class EmployeeView extends Layout {
 
         roomMenu.add("Update").addActionListener(e -> {
 
-            int selectRoomId   = this.getTableSelectedRow(tbl_room,0);
+            int selectRoomId = this.getTableSelectedRow(tbl_room, 0);
             RoomSaveView roomSaveView = new RoomSaveView(this.roomManager.getById(selectRoomId));
             roomSaveView.addWindowListener(new WindowAdapter() {
                 @Override
@@ -467,14 +458,14 @@ public class EmployeeView extends Layout {
 
         });
         pensionMenu.add("Delete").addActionListener(e -> {
-            if(Helper.confirm("sure")){
-                int selectPensionId   = this.getTableSelectedRow(tbl_pension,0);
-                if(this.pensionManager.delete(selectPensionId)){
-                    Helper.showMsg("done","");
+            if (Helper.confirm("sure")) {
+                int selectPensionId = this.getTableSelectedRow(tbl_pension, 0);
+                if (this.pensionManager.delete(selectPensionId)) {
+                    Helper.showMsg("done", "");
 
                     loadPensionTable(null);
                     loadHotelTable();
-                }else {
+                } else {
                     Helper.showMsg("error");
                 }
             }
@@ -482,7 +473,7 @@ public class EmployeeView extends Layout {
 
         pensionMenu.add("Update").addActionListener(e -> {
 
-            int selectPensionId   = this.getTableSelectedRow(tbl_pension,0);
+            int selectPensionId = this.getTableSelectedRow(tbl_pension, 0);
             PensionView pensionView = new PensionView(this.pensionManager.getById(selectPensionId));
             pensionView.addWindowListener(new WindowAdapter() {
                 @Override
@@ -500,28 +491,26 @@ public class EmployeeView extends Layout {
 
     private void loadPensionTable(ArrayList<Object[]> pensionList) {
 
-        this.col_pension = new Object[]{"Pension ID","Hotel Name","Hotel ID","Pension Type"};
+        this.col_pension = new Object[]{"Pension ID", "Hotel Name", "Hotel ID", "Pension Type"};
 
-        if(pensionList == null){
+        if (pensionList == null) {
             pensionList = this.pensionManager.getForTable(this.col_pension.length, this.pensionManager.findAll());
         }
 
         this.createTable(this.tmdl_pension, this.tbl_pension, this.col_pension, pensionList);
 
 
-
     }
 
 
     public void loadSeasonTable(ArrayList<Object[]> seasonList) {
-        this.col_season = new Object[]{"Season ID","Hotel Name","Hotel ID","Start Date","Finish Date"};
+        this.col_season = new Object[]{"Season ID", "Hotel Name", "Hotel ID", "Start Date", "Finish Date"};
 
-        if(seasonList == null){
-            seasonList = this.seasonManager.getForTable(this.col_season.length,this.seasonManager.findAll());
+        if (seasonList == null) {
+            seasonList = this.seasonManager.getForTable(this.col_season.length, this.seasonManager.findAll());
         }
 
         this.createTable(this.tmdl_season, this.tbl_season, this.col_season, seasonList);
-
 
 
     }
@@ -539,7 +528,7 @@ public class EmployeeView extends Layout {
         this.seasonMenu = new JPopupMenu();
 
         seasonMenu.add("Add").addActionListener(e -> {
-            SeasonView seasonView = new SeasonView(new Season(),null,null);
+            SeasonView seasonView = new SeasonView(new Season(), null, null);
 
 
             seasonView.addWindowListener(new WindowAdapter() {
@@ -553,14 +542,14 @@ public class EmployeeView extends Layout {
 
         });
         seasonMenu.add("Delete").addActionListener(e -> {
-            if(Helper.confirm("sure")){
-                int selectSeasonId   = this.getTableSelectedRow(tbl_season,0);
-                if(this.seasonManager.delete(selectSeasonId)){
-                    Helper.showMsg("done","");
+            if (Helper.confirm("sure")) {
+                int selectSeasonId = this.getTableSelectedRow(tbl_season, 0);
+                if (this.seasonManager.delete(selectSeasonId)) {
+                    Helper.showMsg("done", "");
 
                     loadSeasonTable(null);
                     loadHotelTable();
-                }else {
+                } else {
                     Helper.showMsg("error");
                 }
             }
@@ -568,14 +557,14 @@ public class EmployeeView extends Layout {
 
         seasonMenu.add("Update").addActionListener(e -> {
 
-            int selectSeasonId   = this.getTableSelectedRow(tbl_season,0);
+            int selectSeasonId = this.getTableSelectedRow(tbl_season, 0);
             String startDate = seasonManager.getById(selectSeasonId).getStartDate().toString();
             String finishDate = seasonManager.getById(selectSeasonId).getFinishDate().toString();
-            SeasonView seasonView = new SeasonView(this.seasonManager.getById(selectSeasonId),startDate,finishDate);
+            SeasonView seasonView = new SeasonView(this.seasonManager.getById(selectSeasonId), startDate, finishDate);
             seasonView.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
-                   loadSeasonTable(null);
+                    loadSeasonTable(null);
                     loadHotelTable();
 
                 }
@@ -586,15 +575,12 @@ public class EmployeeView extends Layout {
         tbl_season.setComponentPopupMenu(seasonMenu);
 
 
-
-
-
     }
 
     public void loadHotelTable() {
 
         // tablonun kolonlarını oluşturuyoruz Java da bütün veri tipleri objden üretildiği için obj kulllanıyoruz
-        Object[] col_hotel = {"Hotel ID", "Hotel Name", "Hotel Address", "Hotel Mail", "Hotel Phone","Hotel Star","Hotel Car Park","Hotel Wifi","Hotel Pool","Hotel Fitness", "Hotel Concierge", "Hotel Spa", "Hotel Room Service"};
+        Object[] col_hotel = {"Hotel ID", "Hotel Name", "Hotel Address", "Hotel Mail", "Hotel Phone", "Hotel Star", "Hotel Car Park", "Hotel Wifi", "Hotel Pool", "Hotel Fitness", "Hotel Concierge", "Hotel Spa", "Hotel Room Service"};
         ArrayList<Hotel> hotelArrayList = hotelManager.findAll();
 
 
@@ -625,20 +611,18 @@ public class EmployeeView extends Layout {
             try {
                 String select_hotel_id = tbl_hotel_list.getValueAt(tbl_hotel_list.getSelectedRow(), 0).toString();
                 fld_dlt_hotel_id.setText(select_hotel_id);
-            } catch (Exception ignored){
+            } catch (Exception ignored) {
             }
         });
 
 
-
-
         btn_delete_hotel.addActionListener(e -> {
-            if(Helper.isFieldEmpty(fld_dlt_hotel_id)) {
+            if (Helper.isFieldEmpty(fld_dlt_hotel_id)) {
                 Helper.showMsg("fill");
             } else {
                 if (Helper.confirm("sure")) {
                     int hotel_id = Integer.parseInt(fld_dlt_hotel_id.getText());
-                    if(this.hotelManager.delete(hotel_id)) {
+                    if (this.hotelManager.delete(hotel_id)) {
                         Helper.showMsg("done");
                         loadHotelTable();
                         fld_dlt_hotel_id.setText(null);
@@ -686,7 +670,6 @@ public class EmployeeView extends Layout {
         });
 
 
-
 //        this.userMenu.add("Delete").addActionListener(e -> {
 //            int selectedUserId = this.getTableSelectedRow(tbl_user, 0);
 //            if (Helper.confirm("sure")) {
@@ -703,8 +686,6 @@ public class EmployeeView extends Layout {
 
         this.tbl_hotel_list.setComponentPopupMenu(this.hotelMenu);
     }
-
-
 
 
 }

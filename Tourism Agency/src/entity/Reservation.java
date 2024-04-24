@@ -19,7 +19,7 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(int roomId,int guestCount, int numberOfNights, LocalDate checkInDate, LocalDate checkOutDate, double totalPrice, String guestName, int guestCitizenId, String guestMail, String guestPhone) {
+    public Reservation(int roomId, int guestCount, int numberOfNights, LocalDate checkInDate, LocalDate checkOutDate, double totalPrice, String guestName, int guestCitizenId, String guestMail, String guestPhone) {
         this.roomId = roomId;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;

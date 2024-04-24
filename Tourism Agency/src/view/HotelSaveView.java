@@ -62,7 +62,7 @@ public class HotelSaveView extends Layout {
         btn_hotel_save.addActionListener(e -> {
 
             // Kaydedilecek alanların boş olup olmadığını kontrol ediyor
-            JTextField[] textFields = new JTextField[]{fld_add_hotel_name, fld_add_hotel_mail,fld_add_hotel_address,fld_add_hotel_phone};
+            JTextField[] textFields = new JTextField[]{fld_add_hotel_name, fld_add_hotel_mail, fld_add_hotel_address, fld_add_hotel_phone};
 
             if (Helper.isFieldListEmpty(textFields) || isAnyEmpty()) {
                 Helper.showMsg("fill");
@@ -86,8 +86,7 @@ public class HotelSaveView extends Layout {
                             rd_hotel_room_service.isSelected());
                     // save metodu return boolean dönüyor
                     result = this.hotelManager.save(this.hotel);
-                }
-                else {
+                } else {
                     // update işlemi user boş değilse
                     this.hotel.setHotelName(fld_add_hotel_name.getName());
                     this.hotel.setHotelName(fld_add_hotel_name.getText());

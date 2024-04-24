@@ -47,7 +47,6 @@ public class SeasonDao {
     }
 
 
-
     public ArrayList<Season> getByListSeasonId(int hotelId) {
 
         String sql = "SELECT * FROM public.season WHERE hotel_id = " + hotelId;
@@ -109,7 +108,7 @@ public class SeasonDao {
             pr.setInt(1, season.getHotelId());
             pr.setDate(2, Date.valueOf(season.getStartDate()));
             pr.setDate(3, Date.valueOf(season.getFinishDate()));
-            pr.setInt(4,  season.getId());
+            pr.setInt(4, season.getId());
             return pr.executeUpdate() != -1;
         } catch (SQLException throwables) {
             throwables.printStackTrace();

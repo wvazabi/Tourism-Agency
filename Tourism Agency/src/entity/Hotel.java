@@ -19,7 +19,7 @@ public class Hotel {
     public Hotel() {
     }
 
-    public Hotel(String hotelName, String hotelAddress, String hotelMail, String hotelPhone, String hotelStar, boolean hotelWifi, boolean hotelPool, boolean hotelFitness, boolean hotelConcierge, boolean hotelSpa, boolean hotelRoomService,boolean hotelCarParking) {
+    public Hotel(String hotelName, String hotelAddress, String hotelMail, String hotelPhone, String hotelStar, boolean hotelWifi, boolean hotelPool, boolean hotelFitness, boolean hotelConcierge, boolean hotelSpa, boolean hotelRoomService, boolean hotelCarParking) {
         this.hotelName = hotelName;
         this.hotelAddress = hotelAddress;
         this.hotelMail = hotelMail;
@@ -154,10 +154,10 @@ public class Hotel {
     public boolean getHotelSpa() {
         return hotelSpa;
     }
+
     public boolean getHotelCarPark() {
         return hotelCarParking;
     }
-
 
 
     public void setHotelSpa(boolean hotelSpa) {
