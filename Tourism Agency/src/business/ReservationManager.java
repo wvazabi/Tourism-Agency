@@ -1,12 +1,10 @@
 package business;
 
 import core.Helper;
-import dao.HotelDao;
-import dao.PensionDao;
+import dao.*;
 import dao.ReservationDao;
-import dao.ReservationDao;
-import dao.SeasonDao;
 import entity.Reservation;
+import entity.Room;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -17,6 +15,7 @@ public class ReservationManager {
     private HotelDao hotelDao;
     private PensionDao pensionDao;
     private SeasonDao seasonDao;
+    private RoomDao roomDao;
 
     public ReservationManager() {
 
@@ -24,6 +23,7 @@ public class ReservationManager {
         this.hotelDao = new HotelDao();
         this.pensionDao = new PensionDao();
         this.seasonDao = new SeasonDao();
+        this.roomDao = new RoomDao();
 
     }
 
@@ -59,27 +59,32 @@ public class ReservationManager {
 //        return reservationObjList;
 //    }
 
+
+
     public ArrayList<Object[]> getForTable(int size, ArrayList<Reservation> reservationList) {
         ArrayList<Object[]> reservationObjList = new ArrayList<>();
         for (Reservation reservation : reservationList) {
             int i = 0;
 
-            Object[] rowObject = new Object[size];
-            rowObject[i++] = reservation.getId();
-            rowObject[i++] = reservation.getRoomId();
-            rowObject[i++] = reservation.getCheckInDate();
-            rowObject[i++] = reservation.getCheckOutDate();
-            rowObject[i++] = reservation.getTotalPrice();
-            rowObject[i++] = reservation.getGuestName();
-            rowObject[i++] = reservation.getGuestCitizenId();
-            rowObject[i++] = reservation.getGuestMail();
-            rowObject[i++] = reservation.getGuestPhone();
-            rowObject[i++] = reservation.getGuestCount();
+            Object[] rowObject = new Object[size]; // 11 sütun var
+            rowObject[i++] = reservation.getId(); // Reservation ID
+            rowObject[i++] = reservation.getGuestCitizenId(); // Guest ID
+            rowObject[i++] = reservation.getGuestName(); // Guest Name
+            rowObject[i++] = reservation.getGuestPhone(); // Guest Phone
+            rowObject[i++] = reservation.getGuestMail(); // Guest E-Mail
+            rowObject[i++] = hotelDao.getById(roomDao.getById(reservation.getRoomId()).getHotelId()).getHotelName(); // Hotel Name
+            rowObject[i++] = reservation.getCheckInDate(); // Check-in Date
+            rowObject[i++] = reservation.getCheckOutDate(); // Check-out Date
+            rowObject[i++] = pensionDao.getById(roomDao.getById(reservation.getRoomId()).getPensionId()).getPensionType();
+            rowObject[i++] = reservation.getNumberOfNights(); // Number of Night
+            rowObject[i++] = reservation.getGuestCount(); // Number of Guest
+            rowObject[i++] = reservation.getTotalPrice(); // Total Cost
 
             reservationObjList.add(rowObject);
         }
         return reservationObjList;
     }
+
 
 
     public boolean save(Reservation reservation) {

@@ -268,6 +268,7 @@ public class EmployeeView extends Layout {
             reservation.setCheckOutDate(LocalDate.parse(this.checkOutDate));
             reservation.setGuestPhone(this.fld_phone_number.getText());
             reservation.setGuestName(this.fld_name_surname.getText());
+            reservation.setNumberOfNights((int) this.numberOfNights);
 
             this.reservationManager.save(reservation);
 

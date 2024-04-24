@@ -78,9 +78,10 @@ public class ReservationDao {
                 "guest_citizen_id," +
                 "guest_mail," +
                 "guest_phone," +
-                "guest_count" +
+                "guest_count," +
+                "number_of_night " +
                 ")" +
-                "VALUES (?,?,?,?,?,?,?,?,?)";
+                "VALUES (?,?,?,?,?,?,?,?,?,?)";
 
         try {
             PreparedStatement pr = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -93,6 +94,7 @@ public class ReservationDao {
             pr.setString(7, reservation.getGuestMail());
             pr.setString(8, reservation.getGuestPhone());
             pr.setInt(9, reservation.getGuestCount());
+            pr.setInt(10, reservation.getNumberOfNights());
 
             int affectedRows = pr.executeUpdate();
             if (affectedRows == 0) {
@@ -126,7 +128,8 @@ public class ReservationDao {
                 "guest_citizen_id = ?," +
                 "guest_mail = ?," +
                 "guest_phone = ?," +
-                "guest_count = ? " +
+                "guest_count = ?," +
+                "number_of_night = ? " +
                 "WHERE reservation_id = ?";
 
         try {
@@ -140,7 +143,8 @@ public class ReservationDao {
             pr.setString(7, reservation.getGuestMail());
             pr.setString(8, reservation.getGuestPhone());
             pr.setInt(9, reservation.getGuestCount());
-            pr.setInt(10, reservation.getId());
+            pr.setInt(10, reservation.getNumberOfNights());
+            pr.setInt(11, reservation.getId());
 
             return pr.executeUpdate() != -1;
         } catch (SQLException throwables) {
@@ -180,6 +184,7 @@ public class ReservationDao {
         reservation.setGuestMail(rs.getString("guest_mail"));
         reservation.setGuestPhone(rs.getString("guest_phone"));
         reservation.setGuestCount(rs.getInt("guest_count"));
+        reservation.setNumberOfNights(rs.getInt("number_of_night"));
 
         return reservation;
     }
