@@ -7,6 +7,7 @@ import entity.User;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class HotelManager {
 
@@ -52,9 +53,6 @@ public class HotelManager {
 
             hotelList.add(rowObject);
         }
-
-        System.out.println("Hotel getfortable List: " + hotelList);
-
 
         return hotelList;
     }

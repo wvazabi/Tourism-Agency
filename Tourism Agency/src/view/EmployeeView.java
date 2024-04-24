@@ -9,9 +9,15 @@ import entity.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import javax.swing.JLabel;
 
 public class EmployeeView extends Layout {
     private JPanel container;
@@ -53,6 +59,23 @@ public class EmployeeView extends Layout {
     private JLabel lbl_adult;
     private JLabel lbl_child;
     private JTable tbl_room_list;
+    private JPanel pnl_make_reservation;
+    private JTextField fld_selected_room_id;
+    private JTextField fld_check_in_date;
+    private JTextField fld_number_of_adults;
+    private JTextField fld_number_of_child;
+    private JTextField fld_name_surname;
+    private JTextField fld_check_out_date;
+    private JTextField fld_hotel_name;
+    private JTextField fld_pension_type;
+    private JTextField fld_number_of_nights;
+    private JTextField fld_citizen_id;
+    private JTextField fld_phone_number;
+    private JTextField fld_email;
+    private JLabel lbl_total_amaount;
+    private JTextField fld_total_amount;
+    private JButton btn_make_reservation;
+    double totalCost;
 
 
     private DefaultComboBoxModel<Star> cmbModel;
@@ -62,11 +85,15 @@ public class EmployeeView extends Layout {
     private Object[] col_room;
     private Object[] col_pension;
     private Object[] col_roomSearch;
+    private Object[] col_reservation;
+
 
 
     //private Object[] col_hotel;
     private Object [] row_hotel_list;
     private Object [] row_pension_list;
+    private Object [] row_reservation_list;
+
 
     private Hotel hotel;
     private User user;
@@ -100,6 +127,10 @@ public class EmployeeView extends Layout {
         this.roomManager = new RoomManager();
         this.user = user;
 
+        this.fld_srch_check_in.setText(LocalDate.now().toString());
+        this.fld_srch_check_out.setText(LocalDate.now().plusWeeks(2).toString());
+
+
 
         this.lbl_welcome.setText("Welcome employee user: " + user.getUsername().toUpperCase());
         btn_logout.addActionListener(e -> {
@@ -124,7 +155,6 @@ public class EmployeeView extends Layout {
 
 
 
-
     }
 
     private void loadRoomSearchTable(ArrayList<Object[]> roomList) {
@@ -146,6 +176,42 @@ public class EmployeeView extends Layout {
                 return column != 1; // 1. sütun (sütun indeksi 0) dışındaki tüm sütunlar düzenlenebilir olacak
             }
         };
+
+        // Seçilen room un bilgilerini getirir
+        tbl_room_list.getSelectionModel().addListSelectionListener(e -> {
+            try {
+                String selectedRoomId = tbl_room_list.getValueAt(tbl_room_list.getSelectedRow(),0).toString();
+                fld_selected_room_id.setText(selectedRoomId);
+                String checkInDate = fld_srch_check_in.getText();
+                String checkOutDate = fld_srch_check_out.getText();
+                fld_check_in_date.setText(checkInDate);
+                fld_check_out_date.setText(fld_srch_check_out.getText());
+                int numberOfAdults = Integer.parseInt(cmb_room_srch_adult_count.getSelectedItem().toString());
+                int numberOfChildren = Integer.parseInt(cmb_room_srch_child_count.getSelectedItem().toString());
+                fld_number_of_adults.setText(String.valueOf(numberOfAdults));
+                fld_number_of_child.setText(String.valueOf(numberOfChildren));
+                String selectedHotelName =  tbl_room_list.getValueAt(tbl_room_list.getSelectedRow(),1).toString();
+                fld_hotel_name.setText(selectedHotelName);
+                int selectedPensionId = this.roomManager.getById(Integer.parseInt(selectedRoomId)).getPensionId();
+                fld_pension_type.setText(this.pensionManager.getById(selectedPensionId).getPensionType());
+                // 2 Date arasındaki gün farkını hesaplar
+                long numberOfNights = ChronoUnit.DAYS.between(LocalDate.parse(checkInDate), LocalDate.parse(checkOutDate));
+                fld_number_of_nights.setText(String.valueOf(numberOfNights));
+                this.room = this.roomManager.getById(Integer.parseInt(selectedRoomId));
+                this.totalCost = ((this.room.getAdultPrice() * numberOfAdults) + (this.room.getChildPrice() * numberOfChildren)) * numberOfNights;
+                fld_total_amount.setText(String.valueOf(totalCost));
+                System.out.println(totalCost);
+
+
+            } catch (Exception ignored){
+            }
+        });
+
+        btn_make_reservation.addActionListener(e -> {
+
+
+        });
+
     }
 
 

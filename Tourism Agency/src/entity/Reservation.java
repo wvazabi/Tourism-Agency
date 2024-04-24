@@ -13,11 +13,12 @@ public class Reservation {
     private int guestCitizenId;
     private String guestMail;
     private String guestPhone;
+    private int guestCount;
 
     public Reservation() {
     }
 
-    public Reservation(int roomId, LocalDate checkInDate, LocalDate checkOutDate, double totalPrice, String guestName, int guestCitizenId, String guestMail, String guestPhone) {
+    public Reservation(int roomId,int numberOfNights, LocalDate checkInDate, LocalDate checkOutDate, double totalPrice, String guestName, int guestCitizenId, String guestMail, String guestPhone) {
         this.roomId = roomId;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
@@ -26,6 +27,19 @@ public class Reservation {
         this.guestCitizenId = guestCitizenId;
         this.guestMail = guestMail;
         this.guestPhone = guestPhone;
+        this.guestCount = numberOfNights;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getGuestCount() {
+        return guestCount;
+    }
+
+    public void setGuestCount(int guestCount) {
+        this.guestCount = guestCount;
     }
 
     public int getId() {
