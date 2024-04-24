@@ -2,7 +2,7 @@
 # Patika+ Tourism Agency Java Swing Project
 ---
 
-## Operational Logic of the Tourism Agency
+## Tourism Agency
 
 The operational logic of the Tourism Agency is as follows: It offers a wide range of digital panels to manage hotels, room types, board types, periods, prices, and reservations.
 
