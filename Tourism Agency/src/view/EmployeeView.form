@@ -276,23 +276,246 @@
               </scrollpane>
             </children>
           </grid>
-          <grid id="48c13" binding="pnl_price_list" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
-            <constraints>
-              <tabbedpane title="Price Management"/>
-            </constraints>
-            <properties/>
-            <border type="none"/>
-            <children/>
-          </grid>
-          <grid id="87056" binding="pnl_search_room" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="87056" binding="pnl_search_room" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <tabbedpane title="Room Search"/>
             </constraints>
             <properties/>
             <border type="none"/>
-            <children/>
+            <children>
+              <grid id="17424" binding="pnl_room_srch" layout-manager="GridLayoutManager" row-count="2" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="5" left="5" bottom="5" right="5"/>
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="19a4f" class="javax.swing.JLabel" binding="pnp_address">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Address/ City"/>
+                    </properties>
+                  </component>
+                  <hspacer id="9be9">
+                    <constraints>
+                      <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                  </hspacer>
+                  <component id="3b34e" class="javax.swing.JComboBox" binding="cmb_room_srch_adress">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <model>
+                        <item value="Adana"/>
+                        <item value="Adıyaman"/>
+                        <item value="Afyonkarahisar"/>
+                        <item value="Ağrı"/>
+                        <item value="Aksaray"/>
+                        <item value="Amasya"/>
+                        <item value="Ankara"/>
+                        <item value="Antalya"/>
+                        <item value="Ardahan"/>
+                        <item value="Artvin"/>
+                        <item value="Aydın"/>
+                        <item value="Balıkesir"/>
+                        <item value="Bartın"/>
+                        <item value="Batman"/>
+                        <item value="Bayburt"/>
+                        <item value="Bilecik"/>
+                        <item value="Bingöl"/>
+                        <item value="Bitlis"/>
+                        <item value="Bolu"/>
+                        <item value="Burdur"/>
+                        <item value="Bursa"/>
+                        <item value="Çanakkale"/>
+                        <item value="Çankırı"/>
+                        <item value="Çorum"/>
+                        <item value="Denizli"/>
+                        <item value="Diyarbakır"/>
+                        <item value="Düzce"/>
+                        <item value="Edirne"/>
+                        <item value="Elazığ"/>
+                        <item value="Erzincan"/>
+                        <item value="Erzurum"/>
+                        <item value="Eskişehir"/>
+                        <item value="Gaziantep"/>
+                        <item value="Giresun"/>
+                        <item value="Gümüşhane"/>
+                        <item value="Hakkâri"/>
+                        <item value="Hatay"/>
+                        <item value="Iğdır"/>
+                        <item value="Isparta"/>
+                        <item value="İstanbul"/>
+                        <item value="İzmir"/>
+                        <item value="Kahramanmaraş"/>
+                        <item value="Karabük"/>
+                        <item value="Karaman"/>
+                        <item value="Kars"/>
+                        <item value="Kastamonu"/>
+                        <item value="Kayseri"/>
+                        <item value="Kilis"/>
+                        <item value="Kırıkkale"/>
+                        <item value="Kırklareli"/>
+                        <item value="Kırşehir"/>
+                        <item value="Kocaeli"/>
+                        <item value="Konya"/>
+                        <item value="Kütahya"/>
+                        <item value="Malatya"/>
+                        <item value="Manisa"/>
+                        <item value="Mardin"/>
+                        <item value="Mersin"/>
+                        <item value="Muğla"/>
+                        <item value="Muş"/>
+                        <item value="Nevşehir"/>
+                        <item value="Niğde"/>
+                        <item value="Ordu"/>
+                        <item value="Osmaniye"/>
+                        <item value="Rize"/>
+                        <item value="Sakarya"/>
+                        <item value="Samsun"/>
+                        <item value="Şanlıurfa"/>
+                        <item value="Siirt"/>
+                        <item value="Sinop"/>
+                        <item value="Sivas"/>
+                        <item value="Şırnak"/>
+                        <item value="Tekirdağ"/>
+                        <item value="Tokat"/>
+                        <item value="Trabzon"/>
+                        <item value="Tunceli"/>
+                        <item value="Uşak"/>
+                        <item value="Van"/>
+                        <item value="Yalova"/>
+                        <item value="Yozgat"/>
+                        <item value="Zonguldak"/>
+                      </model>
+                    </properties>
+                  </component>
+                  <component id="5f85" class="javax.swing.JLabel" binding="lbl_check_in">
+                    <constraints>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Check-in Date"/>
+                    </properties>
+                  </component>
+                  <component id="e815b" class="javax.swing.JLabel" binding="lbl_check_out">
+                    <constraints>
+                      <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Check-out Date"/>
+                    </properties>
+                  </component>
+                  <component id="8fbed" class="javax.swing.JTextField" binding="fld_srch_check_in">
+                    <constraints>
+                      <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                        <preferred-size width="150" height="-1"/>
+                      </grid>
+                    </constraints>
+                    <properties>
+                      <text value="dd/mm/yyyy"/>
+                    </properties>
+                  </component>
+                  <component id="bfe20" class="javax.swing.JTextField" binding="fld_srch_check_out">
+                    <constraints>
+                      <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                        <preferred-size width="150" height="-1"/>
+                      </grid>
+                    </constraints>
+                    <properties>
+                      <text value="dd/mm/yyyy"/>
+                    </properties>
+                  </component>
+                  <component id="eda30" class="javax.swing.JLabel" binding="lbl_adult">
+                    <constraints>
+                      <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Adult"/>
+                    </properties>
+                  </component>
+                  <component id="c7517" class="javax.swing.JLabel" binding="lbl_child">
+                    <constraints>
+                      <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Child"/>
+                    </properties>
+                  </component>
+                  <component id="e8841" class="javax.swing.JComboBox" binding="cmb_room_srch_adult_count">
+                    <constraints>
+                      <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <model>
+                        <item value="0"/>
+                        <item value="1"/>
+                        <item value="2"/>
+                        <item value="3"/>
+                        <item value="4"/>
+                        <item value="5"/>
+                      </model>
+                    </properties>
+                  </component>
+                  <component id="33ec" class="javax.swing.JComboBox" binding="cmb_room_srch_child_count">
+                    <constraints>
+                      <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <model>
+                        <item value="0"/>
+                        <item value="1"/>
+                        <item value="2"/>
+                        <item value="3"/>
+                        <item value="4"/>
+                        <item value="5"/>
+                      </model>
+                    </properties>
+                  </component>
+                  <component id="d6246" class="javax.swing.JButton" binding="btn_room_search">
+                    <constraints>
+                      <grid row="1" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Room Search"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <vspacer id="79adc">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+              <grid id="67ff8" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <scrollpane id="eac2b">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="52508" class="javax.swing.JTable" binding="tbl_room_list">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                    </children>
+                  </scrollpane>
+                </children>
+              </grid>
+            </children>
           </grid>
           <grid id="b935c" binding="pnl_reservation" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>

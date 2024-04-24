@@ -36,6 +36,28 @@ public class RoomManager {
         return this.roomDao.findAll();
     }
 
+    public ArrayList<Object[]> getForTableForRoomSrch(int size, ArrayList<Room> roomList) {
+        ArrayList<Object[]> roomObjList = new ArrayList<>();
+        for (Room obj : roomList) {
+            int i = 0;
+
+            Object[] rowObject = new Object[size];
+            rowObject[i++] = obj.getId();
+            rowObject[i++] = this.hotelDao.getById(obj.getHotelId()).getHotelName();
+            rowObject[i++] = obj.getHotelId();
+            rowObject[i++] = this.hotelDao.getById(obj.getHotelId()).getHotelAddress(); // pension ismi eklendi
+            rowObject[i++] = this.hotelDao.getById(obj.getHotelId()).getHotelPhone();// pension ismi eklendi
+            rowObject[i++] = this.hotelDao.getById(obj.getHotelId()).getHotelMail();
+            rowObject[i++] = this.hotelDao.getById(obj.getHotelId()).getHotelStar();
+            rowObject[i++] = obj.getType();
+            rowObject[i++] = obj.getStock();
+            rowObject[i++] = obj.getBedCapacity();
+
+            roomObjList.add(rowObject);
+        }
+        return roomObjList;
+    }
+
     public ArrayList<Object[]> getForTable(int size, ArrayList<Room> roomList) {
         ArrayList<Object[]> roomObjList = new ArrayList<>();
         for (Room obj : roomList) {

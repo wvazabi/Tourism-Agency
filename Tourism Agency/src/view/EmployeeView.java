@@ -22,7 +22,6 @@ public class EmployeeView extends Layout {
     private JPanel pnl_hotel_list;
     private JPanel pnl_period_list;
     private JPanel pnl_room_list;
-    private JPanel pnl_price_list;
     private JPanel pnl_search_room;
     private JPanel pnl_reservation;
     private JPanel pnl_hotel_srch;
@@ -41,6 +40,19 @@ public class EmployeeView extends Layout {
     private JPanel pnl_pension;
     private JTable tbl_pension;
     private JScrollPane scl_pane_pension;
+    private JPanel pnl_room_srch;
+    private JComboBox cmb_room_srch_adress;
+    private JTextField fld_srch_check_in;
+    private JTextField fld_srch_check_out;
+    private JComboBox cmb_room_srch_adult_count;
+    private JComboBox cmb_room_srch_child_count;
+    private JButton btn_room_search;
+    private JLabel pnp_address;
+    private JLabel lbl_check_in;
+    private JLabel lbl_check_out;
+    private JLabel lbl_adult;
+    private JLabel lbl_child;
+    private JTable tbl_room_list;
 
 
     private DefaultComboBoxModel<Star> cmbModel;
@@ -49,6 +61,7 @@ public class EmployeeView extends Layout {
     private Object[] col_season;
     private Object[] col_room;
     private Object[] col_pension;
+    private Object[] col_roomSearch;
 
 
     //private Object[] col_hotel;
@@ -66,6 +79,7 @@ public class EmployeeView extends Layout {
     private DefaultTableModel tmdl_season;
     private DefaultTableModel tmdl_room;
     private DefaultTableModel tmdl_pension;
+    private DefaultTableModel tmdl_room_search;
 
     private JPopupMenu hotelMenu;
     private JPopupMenu seasonMenu;
@@ -105,10 +119,36 @@ public class EmployeeView extends Layout {
         loadRoomComponent();
         loadRoomTable(null);
 
+        loadRoomSearchComponent();
+        loadRoomSearchTable(null);
+
 
 
 
     }
+
+    private void loadRoomSearchTable(ArrayList<Object[]> roomList) {
+        // 9 line
+        this.col_roomSearch = new Object[]{"Room ID","Hotel Name", "Hotel ID", "Hotel Address/City", "Hotel Phone", "Hotel Email", "Star","Room Type", "Stock", "Bed Count"};
+        if(roomList == null){
+            roomList = this.roomManager.getForTableForRoomSrch(this.col_roomSearch.length,this.roomManager.findAll());
+        }
+
+        this.createTable(this.tmdl_room_search, this.tbl_room_list, this.col_roomSearch, roomList);
+
+    }
+
+    private void loadRoomSearchComponent() {
+        this.tableRowSelect(tbl_room_list);
+        tmdl_room_search = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) { // Sadece belirli bir sütunun düzenlenemez olmasını sağlar
+                return column != 1; // 1. sütun (sütun indeksi 0) dışındaki tüm sütunlar düzenlenebilir olacak
+            }
+        };
+    }
+
+
 
     private void loadRoomTable(ArrayList<Object[]> roomList) {
 
