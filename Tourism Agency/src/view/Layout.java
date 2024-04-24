@@ -10,55 +10,64 @@ import java.util.ArrayList;
 
 public class Layout extends JFrame {
 
+    // Method to initialize the GUI window
     public void guiInitilaze(int width, int height, String title){
-        //Pencere kapatıldığında sadece pencerenin kapatılması sağlar, uygulamanın tamanının kapatılmasını önler
+        // Set close operation to dispose the frame when closed
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        // Set the title of the frame
         this.setTitle(title);
+        // Set the size of the frame
         this.setSize(width,height);
+        // Set the location of the frame using the Helper class
         this.setLocation(Helper.setLoc("x",this.getSize()), Helper.setLoc("y",this.getSize()));
+        // Make the frame visible
         this.setVisible(true);
     }
 
+    // Method to create a table with specified columns and rows
     public void createTable(DefaultTableModel model , JTable table, Object[] columns, ArrayList<Object[]> rows){
-        //tablonun kolonlarını belirleyebilmek için setcolumnidentifiers ya vektör ya obje istiyor
+        // Set the column identifiers for the table model
         model.setColumnIdentifiers(columns);
-        //tabloya table model atanıyor
+        // Set the table model for the table
         table.setModel(model);
-        //tabloların başlıklarını mouse ile değiştirmeyi kapatır
+        // Disable reordering of columns in the table
         table.getTableHeader().setReorderingAllowed(false);
+        // Set the maximum width for the first column in the table
         table.getColumnModel().getColumn(0).setMaxWidth(75);
-        //çift tıklanıldığında düzenlenmesini engelleniyor
+        // Disable editing of cells in the table
         table.setEnabled(false);
 
-        //tabloları güncellediğimizde modeli clearmodel e atıyourz satırları sıfırlıyoruz
+        // Clear the table model when updating the table
         DefaultTableModel clearModel = (DefaultTableModel) table.getModel();
         clearModel.setRowCount(0);
 
+        // If no rows are provided, initialize an empty ArrayList
         if(rows==null){
             rows=new ArrayList<>();
         }
+        // Add rows to the table model
         for(Object[] row : rows){
             model.addRow(row);
         }
 
     }
 
+    // Method to get the selected row from the table
     public int getTableSelectedRow(JTable table,int index){
-        //Update fonksiyonu için seçilen ID yi verme
+        // Return the ID of the selected row
         return Integer.parseInt(table.getValueAt(table.getSelectedRow(),index) .toString());
     }
 
+    // Method to select a row when clicked on in the table
     public void tableRowSelect(JTable table){
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                // Mouse ile tıkladığımız row'u seçili hale getiriyor
+                // Select the clicked row
                 int selected_row = table.rowAtPoint(e.getPoint());
                 table.setRowSelectionInterval(selected_row,selected_row);
             }
         });
     }
-
-
 }

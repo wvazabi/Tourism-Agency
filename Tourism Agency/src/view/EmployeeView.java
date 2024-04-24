@@ -137,75 +137,108 @@ public class EmployeeView extends Layout {
 
 
 
+    /**
+     * Constructs an EmployeeView object with the provided User object.
+     * Initializes components, loads data into tables, and sets up action listeners.
+     *
+     * @param user The User object representing the current user
+     */
     public EmployeeView(User user) {
+        // Adding container to the view
         this.add(container);
-        this.guiInitilaze(1500,750,"Employee Management");
+
+        // Initializing GUI with specified dimensions and title
+        this.guiInitilaze(1500, 750, "Employee Management");
+
+        // Initializing managers for hotel, season, pension, room, and reservation
         this.hotelManager = new HotelManager();
         this.seasonManager = new SeasonManager();
         this.pensionManager = new PensionManager();
         this.roomManager = new RoomManager();
         this.reservationManager = new ReservationManager();
+
+        // Setting the current user
         this.user = user;
 
+        // Setting check-in and check-out dates to current date and two weeks later, respectively
         this.fld_srch_check_in.setText(LocalDate.now().toString());
         this.fld_srch_check_out.setText(LocalDate.now().plusWeeks(2).toString());
 
-
-
+        // Setting welcome message for the employee user
         this.lbl_welcome.setText("Welcome employee user: " + user.getUsername().toUpperCase());
+
+        // Adding action listener for logout button
         btn_logout.addActionListener(e -> {
-            dispose();
-            LoginView loginView = new LoginView();
+            dispose(); // Close the current view
+            LoginView loginView = new LoginView(); // Open a new login view
         });
 
+        // Loading hotel-related components and data
         loadHotelComponent();
         loadHotelTable();
 
+        // Loading season-related components and data
         loadSeasonComponent();
         loadSeasonTable(null);
 
+        // Loading pension-related components and data
         loadPensionComponent();
         loadPensionTable(null);
 
+        // Loading room-related components and data
         loadRoomComponent();
         loadRoomTable(null);
 
+        // Loading room search-related components and data
         loadRoomSearchComponent();
         loadRoomSearchTable(null);
-        
+
+        // Loading reservation-related components and data
         loadReservationComponent();
         loadReservationTable(null);
 
-
+        // Adding action listener for logout button (redundant)
         btn_logout.addActionListener(e -> {
-                dispose();
-                LoginView loginView = new LoginView();
-
+            dispose(); // Close the current view
+            LoginView loginView = new LoginView(); // Open a new login view
         });
-
     }
 
+
+    /**
+     * Loads data into the reservation table with the provided reservation list.
+     * If the reservation list is null, retrieves reservations from the database.
+     *
+     * @param reservationList The list of reservations to be loaded into the table
+     */
     private void loadReservationTable(ArrayList<Object[]> reservationList) {
-        // 12 line
+        // Define column headers for the reservation table
         this.col_reservation = new Object[]{"Reservation ID","Guest ID", "Guest Name", "Guest Phone","Guest E-Mail","Hotel Name","Check-in Date", "Check-out Date","Pension Type", "Number of Night", "Number of Guest","Total Cost"};
+        // If reservation list is null, retrieve reservations from the database
         if(reservationList == null){
             reservationList = this.reservationManager.getForTable(this.col_reservation.length,this.reservationManager.findAll());
         }
 
+        // Create table with provided table model, table, column headers, and reservation list
         this.createTable(this.tmdl_reservation, this.tbl_reservation, this.col_reservation, reservationList);
     }
 
+    /**
+     * Loads reservation-related components and sets up action listeners.
+     */
     private void loadReservationComponent() {
 
+        // Allow row selection in the reservation table
         this.tableRowSelect(tbl_reservation);
+        // Define table model for reservations
         tmdl_reservation = new DefaultTableModel() {
             @Override
-            public boolean isCellEditable(int row, int column) { // Sadece belirli bir sütunun düzenlenemez olmasını sağlar
-                return column != 1; // 1. sütun (sütun indeksi 0) dışındaki tüm sütunlar düzenlenebilir olacak
+            public boolean isCellEditable(int row, int column) { // Allows only certain columns to be editable
+                return column != 1; // All columns except the 2nd one (column index 1) will be editable
             }
         };
 
-        // Seçtiğimiz satırdaki id'yi fld_user_id kutucuğuna getirir.
+        // Set selected reservation ID to the delete field when a reservation is selected
         tbl_reservation.getSelectionModel().addListSelectionListener(e -> {
             try {
                 String select_reservation_id = tbl_reservation.getValueAt(tbl_reservation.getSelectedRow(), 0).toString();
@@ -214,6 +247,7 @@ public class EmployeeView extends Layout {
             }
         });
 
+        // Action listener for delete reservation button
         btn_delete_reservation.addActionListener(e -> {
             if(Helper.isFieldEmpty(fld_reservation_id_delete)) {
                 Helper.showMsg("fill");
@@ -233,44 +267,43 @@ public class EmployeeView extends Layout {
 
         });
 
-
-
-
-
-
-
-
-
-
-
     }
 
-
+    /**
+     * Loads data into the room search table with the provided room list.
+     * If the room list is null, retrieves rooms from the database.
+     *
+     * @param roomList The list of rooms to be loaded into the table
+     */
     private void loadRoomSearchTable(ArrayList<Object[]> roomList) {
-        // 9 line
+        // Define column headers for the room search table
         this.col_roomSearch = new Object[]{"Room ID","Hotel Name", "Hotel ID", "Hotel Address/City", "Hotel Phone", "Hotel Email", "Star","Room Type", "Stock", "Bed Count"};
+        // If room list is null, retrieve rooms from the database
         if(roomList == null){
             roomList = this.roomManager.getForTableForRoomSrch(this.col_roomSearch.length,this.roomManager.findAll());
         }
 
+        // Create table with provided table model, table, column headers, and room list
         this.createTable(this.tmdl_room_search, this.tbl_room_list, this.col_roomSearch, roomList);
 
     }
 
+    /**
+     * Loads room search-related components and sets up action listeners.
+     */
     private void loadRoomSearchComponent() {
 
-
+        // Allow row selection in the room list table
         this.tableRowSelect(tbl_room_list);
+        // Define table model for room search
         tmdl_room_search = new DefaultTableModel() {
             @Override
-            public boolean isCellEditable(int row, int column) { // Sadece belirli bir sütunun düzenlenemez olmasını sağlar
-                return column != 1; // 1. sütun (sütun indeksi 0) dışındaki tüm sütunlar düzenlenebilir olacak
+            public boolean isCellEditable(int row, int column) { // Allows only certain columns to be editable
+                return column != 1; // All columns except the 2nd one (column index 1) will be editable
             }
         };
 
-
-
-        // Seçilen room un bilgilerini getirir
+        // Set selected room information when a room is selected
         tbl_room_list.getSelectionModel().addListSelectionListener(e -> {
             try {
                 this.selectedRoomId = tbl_room_list.getValueAt(tbl_room_list.getSelectedRow(),0).toString();
@@ -287,21 +320,18 @@ public class EmployeeView extends Layout {
                 fld_hotel_name.setText(selectedHotelName);
                 this.selectedPensionId = this.roomManager.getById(Integer.parseInt(selectedRoomId)).getPensionId();
                 fld_pension_type.setText(this.pensionManager.getById(selectedPensionId).getPensionType());
-                // 2 Date arasındaki gün farkını hesaplar
+                // Calculate the number of nights between two dates
                 this.numberOfNights = ChronoUnit.DAYS.between(LocalDate.parse(checkInDate), LocalDate.parse(checkOutDate));
                 fld_number_of_nights.setText(String.valueOf(numberOfNights));
                 this.room = this.roomManager.getById(Integer.parseInt(selectedRoomId));
                 this.totalCost = ((this.room.getAdultPrice() * numberOfAdults) + (this.room.getChildPrice() * numberOfChildren)) * numberOfNights;
                 fld_total_amount.setText(String.valueOf(totalCost));
 
-
-
-
-
             } catch (Exception ignored){
             }
         });
 
+        // Action listener for making a reservation
         btn_make_reservation.addActionListener(e -> {
             reservation = new Reservation();
             reservation.setGuestCount(this.numberOfAdults + this.numberOfChildren);
@@ -316,26 +346,20 @@ public class EmployeeView extends Layout {
             reservation.setNumberOfNights((int) this.numberOfNights);
 
             this.reservationManager.save(reservation);
-            //oda sayısının azaltılması
 
+            // Decrease the stock of the room
             room = roomManager.getById(Integer.parseInt(this.selectedRoomId));
-           int newStok = room.getStock() - 1;
+            int newStok = room.getStock() - 1;
             room.setStock(newStok);
 
+            // Reload tables
             loadReservationTable(null);
             loadHotelTable();
             loadRoomTable(null);
             loadRoomSearchTable(null);
-
-
-
-
-
         });
-
-
-
     }
+
 
 
 

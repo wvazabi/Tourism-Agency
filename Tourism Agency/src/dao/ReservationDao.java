@@ -2,21 +2,19 @@ package dao;
 
 import core.Db;
 import entity.Reservation;
-import entity.Reservation;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 public class ReservationDao {
 
-
-
     private Connection con;
-    private  HotelDao hotelDao;
+
+    // Create instances of other DAOs to perform operations related to reservations
+    private HotelDao hotelDao;
     private SeasonDao seasonDao;
     private PensionDao pensionDao;
     private RoomDao roomDao;
-
 
     public ReservationDao() {
         this.con = Db.getInstance();
@@ -26,6 +24,7 @@ public class ReservationDao {
         pensionDao = new PensionDao();
     }
 
+    // Retrieve a reservation by its ID from the database
     public Reservation getById(int id) {
         Reservation obj = null;
         String query = "SELECT * FROM public.reservation WHERE reservation_id = ?";
@@ -35,31 +34,26 @@ public class ReservationDao {
             ResultSet rs = pr.executeQuery();
             if (rs.next()) {
                 obj = this.match(rs);
-
-
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return obj;
-
     }
 
-
-
+    // Retrieve all reservations from the database
     public ArrayList<Reservation> findAll() {
         String sql = "SELECT * FROM public.reservation ORDER BY room_id ASC";
         return this.selectByQuery(sql);
-
     }
 
+    // Select reservations based on a custom query
     public ArrayList<Reservation> selectByQuery(String query) {
         ArrayList<Reservation> reservationsList = new ArrayList<>();
         try {
             ResultSet rs = this.con.createStatement().executeQuery(query);
             while (rs.next()) {
                 reservationsList.add(this.match(rs));
-
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -67,6 +61,7 @@ public class ReservationDao {
         return reservationsList;
     }
 
+    // Save a new reservation to the database
     public boolean save(Reservation reservation) {
         String query = "INSERT INTO public.reservation" +
                 "(" +
@@ -116,8 +111,7 @@ public class ReservationDao {
         return false;
     }
 
-
-
+    // Update an existing reservation in the database
     public boolean update(Reservation reservation) {
         String query = "UPDATE public.reservation SET " +
                 "room_id = ?," +
@@ -153,25 +147,20 @@ public class ReservationDao {
         return false;
     }
 
-
-
-
-
+    // Delete a reservation from the database
     public boolean delete(int id) {
         String query = "DELETE FROM public.reservation WHERE reservation_id = ?";
         try {
             PreparedStatement pr = con.prepareStatement(query);
             pr.setInt(1, id);
             return pr.executeUpdate() != -1;
-
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return true;
-
     }
 
-
+    // Map the ResultSet to a Reservation object
     public Reservation match(ResultSet rs) throws SQLException {
         Reservation reservation = new Reservation();
         reservation.setId(rs.getInt("reservation_id"));
@@ -185,8 +174,6 @@ public class ReservationDao {
         reservation.setGuestPhone(rs.getString("guest_phone"));
         reservation.setGuestCount(rs.getInt("guest_count"));
         reservation.setNumberOfNights(rs.getInt("number_of_night"));
-
         return reservation;
     }
-
 }

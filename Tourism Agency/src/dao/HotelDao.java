@@ -2,7 +2,6 @@ package dao;
 
 import core.Db;
 import entity.Hotel;
-import entity.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,17 +19,16 @@ public class HotelDao {
     }
 
 
-    // User döndüren metod
-
+    // Method to retrieve all hotels from the database
     public ArrayList<Hotel> findAll() {
         ArrayList<Hotel> hotelArrayList = new ArrayList<>();
 
-        //order by ile daha sonra güncellenenleri sona atmayı engelledik
+        // Retrieving hotels from the database and ordering them by hotel_id
         String query = "SELECT * FROM public.hotel ORDER BY hotel_id ASC";
         try {
             ResultSet resultSet = this.con.createStatement().executeQuery(query);
 
-            //Arraylist yaptığımız için while kullandık
+            // Adding each hotel to the list
             while (resultSet.next()) {
                 hotelArrayList.add(this.match(resultSet));
             }
@@ -40,14 +38,13 @@ public class HotelDao {
         return hotelArrayList;
     }
 
+    // Method to retrieve hotels based on a custom query
     public ArrayList<Hotel> findAll(String query) {
         ArrayList<Hotel> hotelArrayList = new ArrayList<>();
-
-        //order by ile daha sonra güncellenenleri sona atmayı engelledik
         try {
             ResultSet resultSet = this.con.createStatement().executeQuery(query);
 
-            //Arraylist yaptığımız için while kullandık
+            // Adding each hotel to the list
             while (resultSet.next()) {
                 hotelArrayList.add(this.match(resultSet));
             }
@@ -57,30 +54,6 @@ public class HotelDao {
 
         return hotelArrayList;
     }
-
-//TODO Hotel Search
-//    public Hotel findByLogin(String username, String password) {
-//        Hotel obj = null;
-//        //postgresql kullandığımız için schemalar içinde tablolar var varsayılan olarak publiğin içinde geliyor
-//        String query = "SELECT * FROM public.user WHERE user_name = ? AND user_password = ?";
-//        try {
-//            PreparedStatement pr = this.con.prepareStatement(query);
-//
-//            // ? lerini parametreden gelen username ve password ile değiştirme
-//            pr.setString(1, username);
-//            pr.setString(2, password);
-//            // bu işlem varsa resultsetw döndür
-//            ResultSet resultSet = pr.executeQuery();
-//            if (resultSet.next()) {
-//                obj = new User();
-//                //obj nin değerlerini veritabanındati değerlerle resulr set ile setliyoruz
-//                obj = this.match(resultSet);
-//            }
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//        }
-//        return obj;
-//    }
 
     public Hotel match(ResultSet resultSet) throws SQLException {
         Hotel hotel = new Hotel();
@@ -101,8 +74,7 @@ public class HotelDao {
         return hotel;
     }
 
-    //TODO save boolean çünkü ya başarılıdır ya başarısızdır
-
+    // Method to save a new hotel to the database
     public boolean save(Hotel hotel) {
         String query = "INSERT INTO public.hotel (hotel_name,hotel_address,hotel_mail,hotel_phone,hotel_star,hotel_car_park,hotel_wifi,hotel_pool,hotel_fitness,hotel_concierge,hotel_spa,hotel_room_service) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 
@@ -121,7 +93,7 @@ public class HotelDao {
             pr.setBoolean(11, hotel.getHotelSpa());
             pr.setBoolean(12, hotel.getHotelRoomService());
 
-            //boolean metod olduğu için retun bu şekilde en az bir satır çalışırsa değer 0 dan büyük olur (TRUE)
+            // Executing the query and returning true if successful
             return pr.executeUpdate() != -1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -129,7 +101,7 @@ public class HotelDao {
         return true;
     }
 
-    //TODO update
+    // Method to update an existing hotel in the database
     public boolean update(Hotel hotel) {
         String query = "UPDATE public.hotel SET " +
                 "hotel_name = ?, " +
@@ -161,16 +133,18 @@ public class HotelDao {
             pr.setBoolean(12, hotel.getHotelRoomService());
             pr.setInt(13, hotel.getHotelId());
 
+            // Executing the query and returning true if successful
             return pr.executeUpdate() != -1;
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false; // Güncelleme işlemi başarısız olduğunda false döndür
+            return false; // Return false if the update operation fails
         }
 
 
     }
-//TODO delete
+
+    // Method to delete a hotel from the database
     public boolean delete(int id) {
         String query = "DELETE FROM public.hotel WHERE hotel_id =?";
         try {
@@ -184,6 +158,7 @@ public class HotelDao {
         return true;
     }
 
+    // Method to retrieve a hotel by its ID from the database
     public Hotel getById(int id) {
         Hotel obj = null;
         String query = "SELECT * FROM public.hotel WHERE hotel_id = ?";
@@ -201,12 +176,13 @@ public class HotelDao {
 
     }
 
+    // Method to search for hotels by a custom query
     public String searchHotelByQuery(String name, String address, String star) {
         String query = "SELECT * FROM public.hotel WHERE hotel_name LIKE '%{{name}}%' AND hotel_star LIKE '%{{star}}%'";
         query = query.replace("{{name}}", name);
         query = query.replace("{{address}}", address);
         query = query.replace("{{star}}", star);
-        if(!address.isEmpty()) {
+        if (!address.isEmpty()) {
             query += " AND hotel_address='{{address}}'";
             query = query.replace("{{address}}", address);
         }

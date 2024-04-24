@@ -10,13 +10,14 @@ import java.util.ArrayList;
 
 public class RoomDao {
 
-
+    // Connection to the database
     private  Connection con;
+    // Instances of other DAOs to perform operations related to rooms
     private  HotelDao hotelDao;
     private SeasonDao seasonDao;
     private PensionDao pensionDao;
-    
-    
+
+    // Constructor to initialize the RoomDao with a database connection and instances of other DAOs
     public RoomDao() {
         this.con = Db.getInstance();
         hotelDao = new HotelDao();
@@ -24,6 +25,7 @@ public class RoomDao {
         pensionDao = new PensionDao();
     }
 
+    // Retrieve a room by its ID from the database
     public Room getById(int id) {
         Room obj = null;
         String query = "SELECT * FROM public.room WHERE room_id = ?";
@@ -33,31 +35,26 @@ public class RoomDao {
             ResultSet rs = pr.executeQuery();
             if (rs.next()) {
                 obj = this.match(rs);
-
-
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return obj;
-
     }
 
-
-
+    // Retrieve all rooms from the database
     public ArrayList<Room> findAll() {
         String sql = "SELECT * FROM public.room ORDER BY hotel_id ASC";
         return this.selectByQuery(sql);
-
     }
 
+    // Select rooms based on a custom query
     public ArrayList<Room> selectByQuery(String query) {
         ArrayList<Room> roomsList = new ArrayList<>();
         try {
             ResultSet rs = this.con.createStatement().executeQuery(query);
             while (rs.next()) {
                 roomsList.add(this.match(rs));
-
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -65,6 +62,7 @@ public class RoomDao {
         return roomsList;
     }
 
+    // Save a new room to the database
     public boolean save(Room room) {
         String query = "INSERT INTO public.room" +
                 "(" +
@@ -106,7 +104,7 @@ public class RoomDao {
         return false;
     }
 
-
+    // Update an existing room in the database
     public boolean update(Room room) {
         String query = "UPDATE public.room SET " +
                 "hotel_id = ?," +
@@ -147,22 +145,20 @@ public class RoomDao {
         return false;
     }
 
-
+    // Delete a room from the database
     public boolean delete(int id) {
         String query = "DELETE FROM public.room WHERE room_id =?";
         try {
             PreparedStatement pr = con.prepareStatement(query);
             pr.setInt(1, id);
             return pr.executeUpdate() != -1;
-
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return true;
-
     }
 
-
+    // Map the ResultSet to a Room object
     public Room match(ResultSet rs) throws SQLException {
         Room room = new Room();
         room.setId(rs.getInt("room_id"));
@@ -179,7 +175,6 @@ public class RoomDao {
         room.setMinibar(rs.getBoolean("minibar"));
         room.setGameConsole(rs.getBoolean("game_console"));
         room.setCashBox(rs.getBoolean("cash_box"));
-
         return room;
     }
 }
