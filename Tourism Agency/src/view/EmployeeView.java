@@ -255,7 +255,7 @@ public class EmployeeView extends Layout {
                 this.room = this.roomManager.getById(Integer.parseInt(selectedRoomId));
                 this.totalCost = ((this.room.getAdultPrice() * numberOfAdults) + (this.room.getChildPrice() * numberOfChildren)) * numberOfNights;
                 fld_total_amount.setText(String.valueOf(totalCost));
-                System.out.println(totalCost);
+
 
 
 
@@ -278,9 +278,16 @@ public class EmployeeView extends Layout {
             reservation.setNumberOfNights((int) this.numberOfNights);
 
             this.reservationManager.save(reservation);
+            //oda sayısının azaltılması
 
-         loadReservationTable(null);
+            room = roomManager.getById(Integer.parseInt(this.selectedRoomId));
+           int newStok = room.getStock() - 1;
+            room.setStock(newStok);
 
+            loadReservationTable(null);
+            loadHotelTable();
+            loadRoomTable(null);
+            loadRoomSearchTable(null);
 
 
 
