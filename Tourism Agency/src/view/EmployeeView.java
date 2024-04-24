@@ -174,15 +174,30 @@ public class EmployeeView extends Layout {
         loadRoomSearchTable(null);
         
         loadReservationComponent();
-        loadReservationTable();
+        loadReservationTable(null);
 
 
     }
 
-    private void loadReservationTable() {
+    private void loadReservationTable(ArrayList<Object[]> reservationList) {
+        // 12 line
+        this.col_reservation = new Object[]{"Reservation ID","Guest ID", "Guest Name", "Guest Phone","Guest E-Mail","Hotel Name","Check-in Date", "Check-out Date","Pension Type", "Number of Night", "Number of Guest","Total Cost"};
+        if(reservationList == null){
+            reservationList = this.reservationManager.getForTable(this.col_reservation.length,this.reservationManager.findAll());
+        }
+
+        this.createTable(this.tmdl_reservation, this.tbl_reservation, this.col_reservation, reservationList);
     }
 
     private void loadReservationComponent() {
+
+        this.tableRowSelect(tbl_reservation);
+        tmdl_reservation = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) { // Sadece belirli bir sütunun düzenlenemez olmasını sağlar
+                return column != 1; // 1. sütun (sütun indeksi 0) dışındaki tüm sütunlar düzenlenebilir olacak
+            }
+        };
     }
 
 
@@ -255,6 +270,8 @@ public class EmployeeView extends Layout {
             reservation.setGuestName(this.fld_name_surname.getText());
 
             this.reservationManager.save(reservation);
+
+         loadReservationTable(null);
 
 
 
