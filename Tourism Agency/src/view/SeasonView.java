@@ -27,7 +27,7 @@ public class SeasonView extends Layout {
     private ArrayList<Hotel> hotels;
     private DefaultComboBoxModel cmbModel;
 
-    public SeasonView(Season season, String startDate, String finishDate) {
+    public SeasonView(Season season) {
         this.add(container);
         this.seasonManager = new SeasonManager();
         this.hotelManager = new HotelManager();
@@ -36,38 +36,44 @@ public class SeasonView extends Layout {
 
         //populateHotelComboBox();
 
+
+
         for (Hotel hotel : this.hotelManager.findAll()) {
             this.cmd_hotel_name.addItem(new ComboItem(hotel.getHotelId(), hotel.getHotelName()));
         }
 
         // TODO editle
-        this.fld_start_date.setText(LocalDate.now().toString());
-        this.fld_finish_date.setText(LocalDate.now().toString());
+
 
         if (this.season.getId() != 0) {
-            this.fld_start_date.setText(startDate);
-            this.fld_finish_date.setText(finishDate);
-
+            this.fld_start_date.setText(this.season.getStartDate());
+            this.fld_finish_date.setText(this.season.getFinishDate());
 
             ComboItem defaultHotel = new ComboItem(this.season.getHotelId(), this.hotelManager.getById(season.getHotelId()).getHotelName());
             this.cmd_hotel_name.getModel().setSelectedItem(defaultHotel);
         }
 
+
+
         btn_save_season.addActionListener(e -> {
             if (Helper.isFieldListEmpty(new JTextField[]{this.fld_start_date, this.fld_finish_date,})) {
                 Helper.showMsg("fill", "");
             } else {
-                boolean result = false;
+                boolean result = true;
+
+
                 ComboItem selectedHotel = (ComboItem) cmd_hotel_name.getSelectedItem();
 
                 this.season.setHotelId(selectedHotel.getKey());
-                this.season.setStartDate(LocalDate.parse(fld_start_date.getText()));
-                this.season.setFinishDate(LocalDate.parse(fld_finish_date.getText()));
+                this.season.setStartDate(fld_start_date.getText());
+                this.season.setFinishDate(fld_finish_date.getText());
+
 
                 if (this.season.getId() != 0) {
                     result = this.seasonManager.update(this.season);
 
                 } else {
+                    this.season = new Season(selectedHotel.getKey(),fld_start_date.getText(),fld_finish_date.getText());
                     result = this.seasonManager.save(this.season);
 
                 }

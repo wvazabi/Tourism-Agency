@@ -7,14 +7,14 @@ public class Season {
     private int id;
     private int hotelId;
 
-    private LocalDate startDate;
+    private String startDate;
 
-    private LocalDate finishDate;
+    private String finishDate;
 
     public Season() {
     }
 
-    public Season(int hotelId, LocalDate startDate, LocalDate finishDate) {
+    public Season(int hotelId, String startDate, String finishDate) {
         this.hotelId = hotelId;
         this.startDate = startDate;
         this.finishDate = finishDate;
@@ -36,19 +36,19 @@ public class Season {
         this.hotelId = hotelId;
     }
 
-    public LocalDate getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getFinishDate() {
+    public String getFinishDate() {
         return finishDate;
     }
 
-    public void setFinishDate(LocalDate finishDate) {
+    public void setFinishDate(String finishDate) {
         this.finishDate = finishDate;
     }
 }

@@ -1,6 +1,7 @@
 package dao;
 
 import core.Db;
+import core.Helper;
 import entity.Pension;
 import entity.Season;
 
@@ -38,8 +39,8 @@ public class SeasonDao {
             // Belirli bir kimlik numarasına sahip bir pansiyon bulunamadığında, varsayılan bir pansiyon nesnesi veya değeri döndürün
             obj = new Season(); // Varsayılan bir Pension nesnesi oluşturabilirsiniz veya null yerine başka bir değer döndürebilirsiniz
             obj.setHotelId(3);
-            obj.setStartDate(LocalDate.now());
-            obj.setFinishDate(LocalDate.now());
+            obj.setStartDate("tarih bulunamadı");
+            obj.setFinishDate("Tarih bulunamadı");
 
         }
         return obj;
@@ -75,6 +76,7 @@ public class SeasonDao {
     }
 
     public boolean save(Season season) {
+
         String query = "INSERT INTO public.season" +
                 "(" +
                 "hotel_id," +
@@ -86,14 +88,16 @@ public class SeasonDao {
         try {
             PreparedStatement pr = con.prepareStatement(query);
             pr.setInt(1, season.getHotelId());
-            pr.setDate(2, Date.valueOf(season.getStartDate()));
-            pr.setDate(3, Date.valueOf(season.getFinishDate()));
+            pr.setString(2, season.getStartDate());
+            pr.setString(3, season.getFinishDate());
+
             return pr.executeUpdate() != -1;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return true;
     }
+
 
     public boolean update(Season season) {
         String query = "UPDATE public.season SET " +
@@ -106,8 +110,8 @@ public class SeasonDao {
         try {
             PreparedStatement pr = con.prepareStatement(query);
             pr.setInt(1, season.getHotelId());
-            pr.setDate(2, Date.valueOf(season.getStartDate()));
-            pr.setDate(3, Date.valueOf(season.getFinishDate()));
+            pr.setString(2, season.getStartDate());
+            pr.setString(3, season.getFinishDate());
             pr.setInt(4, season.getId());
             return pr.executeUpdate() != -1;
         } catch (SQLException throwables) {
@@ -135,8 +139,8 @@ public class SeasonDao {
         Season season = new Season();
         season.setId(rs.getInt("season_id"));
         season.setHotelId(rs.getInt("hotel_id"));
-        season.setStartDate(rs.getDate("start_date").toLocalDate());
-        season.setFinishDate(rs.getDate("finish_date").toLocalDate());
+        season.setStartDate(rs.getString("start_date"));
+        season.setFinishDate(rs.getString("finish_date"));
 
         return season;
     }

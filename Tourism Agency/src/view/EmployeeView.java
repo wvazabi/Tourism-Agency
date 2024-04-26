@@ -73,6 +73,8 @@ public class EmployeeView extends Layout {
     private JTextField fld_reservation_id_delete;
     private JButton btn_delete_reservation;
     private JScrollPane srl;
+    private JTable tbl_price;
+    private JPanel pnl_price;
     double totalCost;
 
 
@@ -84,6 +86,7 @@ public class EmployeeView extends Layout {
     private Object[] col_pension;
     private Object[] col_roomSearch;
     private Object[] col_reservation;
+    private Object[] col_price;
 
 
     //private Object[] col_hotel;
@@ -98,6 +101,7 @@ public class EmployeeView extends Layout {
     private Room room;
     private Pension pension;
     private Reservation reservation;
+    private Price price;
 
     //Tablolar üzerinde işlem yapabilmemiz için table modellere ihtiyacımız var
     private DefaultTableModel tmdl_hotel;
@@ -106,17 +110,22 @@ public class EmployeeView extends Layout {
     private DefaultTableModel tmdl_pension;
     private DefaultTableModel tmdl_room_search;
     private DefaultTableModel tmdl_reservation;
+    private DefaultTableModel tmdl_price;
 
     private JPopupMenu hotelMenu;
     private JPopupMenu seasonMenu;
     private JPopupMenu roomMenu;
     private JPopupMenu pensionMenu;
+    private JPopupMenu reservationMenu;
+    private JPopupMenu priceMenu;
+
 
     private HotelManager hotelManager;
     private SeasonManager seasonManager;
     private RoomManager roomManager;
     private PensionManager pensionManager;
     private ReservationManager reservationManager;
+    private PriceManager priceManager;
 
     String selectedRoomId;
 
@@ -149,6 +158,7 @@ public class EmployeeView extends Layout {
         this.pensionManager = new PensionManager();
         this.roomManager = new RoomManager();
         this.reservationManager = new ReservationManager();
+        this.priceManager = new PriceManager();
 
         // Setting the current user
         this.user = user;
@@ -166,6 +176,8 @@ public class EmployeeView extends Layout {
             LoginView loginView = new LoginView(); // Open a new login view
         });
 
+        loadReservationComponent();
+        loadReservationTable(null);
         // Loading hotel-related components and data
         loadHotelComponent();
         loadHotelTable();
@@ -187,14 +199,109 @@ public class EmployeeView extends Layout {
         loadRoomSearchTable(null);
 
         // Loading reservation-related components and data
-        loadReservationComponent();
-        loadReservationTable(null);
+
+
+        loadPriceComponent();
+        loadPriceTable(null);
 
         // Adding action listener for logout button (redundant)
         btn_logout.addActionListener(e -> {
             dispose(); // Close the current view
             LoginView loginView = new LoginView(); // Open a new login view
         });
+    }
+
+    private void loadPriceTable(ArrayList<Object[]> priceList) {
+        // Define column headers for the reservation table
+        this.col_price = new Object[]{"Price ID", "Hotel ID", "Season Start Date", "Season End Date", "Pension Type", "Room Type", "Age Type", "Price"};
+        // If reservation list is null, retrieve reservations from the database
+        if (priceList == null) {
+            priceList = this.priceManager.getForTable(this.col_price.length, this.priceManager.findAll());
+        }
+
+        // Create table with provided table model, table, column headers, and reservation list
+        this.createTable(this.tmdl_price, this.tbl_price, this.col_price, priceList);
+
+
+    }
+
+    private void loadPriceComponent() {
+
+        this.tableRowSelect(tbl_price);
+        // Define table model for reservations
+        tmdl_price = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) { // Allows only certain columns to be editable
+                return column != 1; // All columns except the 2nd one (column index 1) will be editable
+            }
+        };
+
+
+        this.priceMenu = new JPopupMenu();
+
+        priceMenu.add("Add").addActionListener(e -> {
+
+            PriceView priceView = new PriceView(new Price());
+
+
+
+            priceView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    loadPriceTable(null);
+                    loadRoomTable(null);
+                    loadPensionTable(null);
+                    loadSeasonTable(null);
+                    loadHotelTable();
+
+                }
+            });
+
+        });
+
+        priceMenu.add("Delete").addActionListener(e -> {
+            if (Helper.confirm("sure")) {
+                int selectPriceId = this.getTableSelectedRow(tbl_price, 0);
+                if (this.priceManager.delete(selectPriceId)) {
+
+                    Helper.showMsg("done", "");
+
+                    loadPriceTable(null);
+                    loadRoomTable(null);
+                    loadPensionTable(null);
+                    loadSeasonTable(null);
+                    loadHotelTable();
+
+                } else {
+                    Helper.showMsg("error");
+                }
+            }
+        });
+
+        priceMenu.add("Update").addActionListener(e -> {
+
+            int selectedPriceId = this.getTableSelectedRow(tbl_price,0);
+
+            PriceView priceView = new PriceView(this.priceManager.getById(selectedPriceId));
+
+
+            priceView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    loadPriceTable(null);
+                    loadRoomTable(null);
+                    loadPensionTable(null);
+                    loadSeasonTable(null);
+                    loadHotelTable();
+                }
+            });
+
+        });
+
+        tbl_price.setComponentPopupMenu(priceMenu);
+
+
+
     }
 
 
@@ -231,6 +338,28 @@ public class EmployeeView extends Layout {
             }
         };
 
+        this.reservationMenu = new JPopupMenu();
+
+
+        reservationMenu.add("Update").addActionListener(e -> {
+
+            int selectReservationId = this.getTableSelectedRow(tbl_reservation,0);
+            ReservationView reservationView = new ReservationView(this.reservationManager.getById(selectReservationId));
+            reservationView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                   loadReservationTable(null);
+                   loadHotelTable();
+                   loadRoomTable(null);
+                   loadRoomSearchTable(null);
+                }
+            });
+
+        });
+
+        tbl_reservation.setComponentPopupMenu(reservationMenu);
+
+
         // Set selected reservation ID to the delete field when a reservation is selected
         tbl_reservation.getSelectionModel().addListSelectionListener(e -> {
             try {
@@ -249,6 +378,8 @@ public class EmployeeView extends Layout {
                     int reservation_id = Integer.parseInt(fld_reservation_id_delete.getText());
                     if (this.reservationManager.delete(reservation_id)) {
                         Helper.showMsg("done");
+                        this.roomManager.getById(this.reservation.getRoomId());
+
                         loadHotelTable();
                         loadReservationTable(null);
                         fld_reservation_id_delete.setText(null);
@@ -317,8 +448,12 @@ public class EmployeeView extends Layout {
                 this.numberOfNights = ChronoUnit.DAYS.between(LocalDate.parse(checkInDate), LocalDate.parse(checkOutDate));
                 fld_number_of_nights.setText(String.valueOf(numberOfNights));
                 this.room = this.roomManager.getById(Integer.parseInt(selectedRoomId));
-                this.totalCost = ((this.room.getAdultPrice() * numberOfAdults) + (this.room.getChildPrice() * numberOfChildren)) * numberOfNights;
-                fld_total_amount.setText(String.valueOf(totalCost));
+                Double adultPrice = 0.0;
+                Double childPrice = 0.0;
+
+
+               calculateTotalCost(this.numberOfAdults,this.numberOfChildren, (int) this.numberOfNights);
+
 
             } catch (Exception ignored) {
             }
@@ -341,16 +476,55 @@ public class EmployeeView extends Layout {
             this.reservationManager.save(reservation);
 
             // Decrease the stock of the room
-            room = roomManager.getById(Integer.parseInt(this.selectedRoomId));
-            int newStok = room.getStock() - 1;
-            room.setStock(newStok);
+            this.room = roomManager.getById(this.reservation.getRoomId());
+            System.out.println("room stock " + this.room.getStock());
+
+            int newStok = (this.room.getStock() - 1);
+
+            System.out.println("new Stok" + newStok);
+            this.room.setStock(newStok);
+            this.roomManager.update(this.room);
 
             // Reload tables
+            loadRoomSearchTable(null);
             loadReservationTable(null);
             loadHotelTable();
             loadRoomTable(null);
-            loadRoomSearchTable(null);
         });
+    }
+
+    public void calculateTotalCost(int numberOfAdults, int numberOfChildren, int numberOfNights) {
+        ArrayList<Price> prices = this.priceManager.findByRoomId(this.room.getId());
+
+        double adultPrice = 0.0;
+        double childPrice = 0.0;
+
+        System.out.println("Prices:");
+
+        for (Price price : prices) {
+            System.out.println(price.getPrice());  // This assumes Price has a meaningful toString() method
+        }
+
+
+        for (Price price : prices) {
+            if (price.getAge().equals("Adult")) {
+                adultPrice = price.getPrice();
+                break; // Exit the loop once adult price is found
+            }
+        }
+
+        for (Price price : prices) {
+            if (price.getAge().equals("Child")) {
+                childPrice = price.getPrice();
+                break; // Exit the loop once child price is found
+            }
+        }
+
+
+
+        this.totalCost = ((adultPrice * numberOfAdults) + (childPrice * numberOfChildren)) * numberOfNights;
+        fld_total_amount.setText(String.valueOf(totalCost));
+
     }
 
 
@@ -528,12 +702,14 @@ public class EmployeeView extends Layout {
         this.seasonMenu = new JPopupMenu();
 
         seasonMenu.add("Add").addActionListener(e -> {
-            SeasonView seasonView = new SeasonView(new Season(), null, null);
+
+            SeasonView seasonView = new SeasonView(new Season());
 
 
             seasonView.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
+
                     loadSeasonTable(null);
                     loadHotelTable();
 
@@ -558,9 +734,9 @@ public class EmployeeView extends Layout {
         seasonMenu.add("Update").addActionListener(e -> {
 
             int selectSeasonId = this.getTableSelectedRow(tbl_season, 0);
-            String startDate = seasonManager.getById(selectSeasonId).getStartDate().toString();
-            String finishDate = seasonManager.getById(selectSeasonId).getFinishDate().toString();
-            SeasonView seasonView = new SeasonView(this.seasonManager.getById(selectSeasonId), startDate, finishDate);
+
+            SeasonView seasonView = new SeasonView(this.seasonManager.getById(selectSeasonId));
+
             seasonView.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {

@@ -43,10 +43,10 @@ public class SeasonManager {
 
     // Method to save a new season
     public boolean save(Season season) {
-        if (this.getById(season.getId()) != null) {
-            Helper.showMsg("error", "");
-            return false;
-        }
+//        if (this.getById(season.getId()) != null) {
+//            Helper.showMsg("error", "Season Model Error");
+//            return false;
+//        }
         return this.seasonDao.save(season);
     }
 

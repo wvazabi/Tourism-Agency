@@ -14,6 +14,7 @@ public class ReservationManager {
     private SeasonDao seasonDao;
     private RoomDao roomDao;
 
+
     public ReservationManager() {
         // Initializing DAO objects
         this.reservationDao = new ReservationDao();

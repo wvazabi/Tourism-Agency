@@ -45,10 +45,10 @@ public class PensionManager {
 
     // Method to save a new pension
     public boolean save(Pension pension) {
-        if (this.getById(pension.getPensionId()) != null) {
-            Helper.showMsg("error", "");
-            return false;
-        }
+//        if (this.getById(pension.getPensionId()) != null) {
+//            Helper.showMsg("error", "");
+//            return false;
+//        }
         return this.pensionDao.save(pension);
     }
 
