@@ -140,7 +140,3 @@ Tourism Agency Employee: Hotel Management, Room Management, Period Management, R
 [![Tourism Agency Project Demo Video](https://github.com/wvazabi/Tourism-Agency/blob/main/Screen%20Shoots/video%20thumbnail.png)](https://www.youtube.com/watch?v=Occmg6LwOoc)
 
 
-#### Unfinished Tasks
-----
-
-- Hotel Search and Room Search functionalities couldn't be fully developed.
