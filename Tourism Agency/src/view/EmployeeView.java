@@ -378,8 +378,11 @@ public class EmployeeView extends Layout {
                     int reservation_id = Integer.parseInt(fld_reservation_id_delete.getText());
                     if (this.reservationManager.delete(reservation_id)) {
                         Helper.showMsg("done");
-                        this.roomManager.getById(this.reservation.getRoomId());
-
+                        Room roomStock = this.roomManager.getById(this.reservation.getRoomId());
+                        int stock = this.roomManager.getById(this.reservation.getRoomId()).getStock() + 1;
+                        roomStock.setStock(stock);
+                        this.roomManager.update(roomStock);
+                        loadRoomTable(null);
                         loadHotelTable();
                         loadReservationTable(null);
                         fld_reservation_id_delete.setText(null);
